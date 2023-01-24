@@ -1,0 +1,6 @@
+node_modules/
+uploads/
+dev-data/
+*.env
+.vscode
+**/grocery*
