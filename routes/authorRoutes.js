@@ -8,13 +8,13 @@ const router = express.Router();
 router
   .route('/')
   .get(authorController.getAllauthors)
-  .post(authController.protect, authController.restrictTo('owner'), authorController.createAuthor);
+  .post(authController.protect, authController.restrictTo('author'), authorController.createAuthor);
 
 router
   .route('/:id')
   .get(authorController.getAuthor)
-  .patch(authController.protect, authController.restrictTo('owner', 'guides', 'admin'), authorController.updateAuthor)
-  .delete(authController.protect, authController.restrictTo('owner', 'admin'), authorController.deleteAuthor);
+  .patch(authController.protect, authController.restrictTo('author', 'admin'), authorController.updateAuthor)
+  .delete(authController.protect, authController.restrictTo('author', 'admin'), authorController.deleteAuthor);
 
 // Nested routes
 router.use('/:authorId/reviews', reviewRouter);

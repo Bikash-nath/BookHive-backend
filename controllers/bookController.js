@@ -1,6 +1,6 @@
 const Book = require('../models/BookModel');
 const factory = require('./handlerFactory');
-const AppError = require('../utils/appError');
+// const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
 exports.getAllBooks = factory.getAll(Book);

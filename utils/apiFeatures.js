@@ -25,7 +25,6 @@ class APIFeatures {
 
   limitFields() {
     const fields = '-id -__v';
-    // 'houseNo city title carpetArea maxTenants availableFor price deposit verified furnishing availability address imageCover bedroomsCount bathroomsCount';
     this.query = this.query.select(fields);
 
     return this;

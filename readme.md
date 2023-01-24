@@ -1,8 +1,24 @@
-<img src="https://user-images.githubusercontent.com/73666943/206369188-28ff03cb-1636-4bb3-a338-7c9486f3f2fc.png" width="200" height="60" />
+# BookBuddy-Backend
 
-# Backend App
+**_Bookspot is an online platform for accessing thousands of free audiobooks, ePubs, PDFs, magazines and podcasts.<br>
+Our Aim is to help people explore, discuss and share books they love and improve process of learning and reading via the efforts of a fantastic community of readers._**
 
-GroRents is a web platform for rentals & grocery which connects property owners with tenants and buyers directly, thereby making buying, selling, and renting of properties simpler, convenient and affordable.
+> ## Visit API: []()
 
-Backend built using modern technologies: Node.js, Express, MongoDB, Mongoose and Friends 😁
-<br>
+---
+
+> ## Getting Started - Backend
+
+- Install all the dependencies
+
+```bash
+npm install
+```
+
+- Run the development server:
+
+```bash
+npm run dev
+```
+
+Open http://localhost:5000 with your browser to see the result.

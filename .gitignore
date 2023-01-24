@@ -1,6 +1,7 @@
 node_modules/
 uploads/
 dev-data/
+loader/
 *.env
 .vscode
-**/grocery*
+.prettierrc
