@@ -59,7 +59,11 @@ const bookSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    bestseller_rank: {
+    bestsellerRank: {
+      type: Number,
+      default: 0,
+    },
+    totalFavourites: {
       type: Number,
       default: 0,
     },
@@ -103,7 +107,7 @@ bookSchema.virtual('reviews', {
 
 // 2.DOCUMENT MIDDLEWARE: runs before .save() and .create()
 bookSchema.pre('save', function (next) {
-  this.slug = slugify(this.title + '-' + this.ISBN_10, { lower: true });
+  this.slug = slugify(this.title + '-' + this.ISBN_10 || this.ISBN_13, { lower: true });
   next();
 });
 

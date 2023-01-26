@@ -1,6 +1,6 @@
-# BookBuddy-Backend
+# BookHive-Backend
 
-**_Bookspot is an online platform for accessing thousands of free audiobooks, ePubs, PDFs, magazines and podcasts.<br>
+**_BookHive is an online platform for accessing thousands of free audiobooks, ePubs, PDFs, magazines and podcasts.<br>
 Our Aim is to help people explore, discuss and share books they love and improve process of learning and reading via the efforts of a fantastic community of readers._**
 
 > ## Visit API: []()

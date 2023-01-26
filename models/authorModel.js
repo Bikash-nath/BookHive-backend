@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const authorSchema = new mongoose.Schema({
   name: {
@@ -41,7 +42,7 @@ const authorSchema = new mongoose.Schema({
   twitter: {
     type: String,
   },
-  num_reviews: {
+  numReviews: {
     type: Number,
     default: 0,
   },
@@ -52,7 +53,7 @@ const authorSchema = new mongoose.Schema({
     max: [5, 'Rating must be below 5.0'],
     set: (val) => Math.round(val * 10) / 10,
   },
-  total_followers: {
+  totalFollowers: {
     type: Number,
     default: 0,
   },
@@ -64,6 +65,16 @@ const authorSchema = new mongoose.Schema({
   ],
 });
 
-const Author = mongoose.model('Author', authorSchema);
+authorSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'author', //in Review modal
+  localField: '_id',
+});
 
+authorSchema.pre('save', function (next) {
+  this.slug = slugify(this.name + this.ISBN_10, { lower: true });
+  next();
+});
+
+const Author = mongoose.model('Author', authorSchema);
 module.exports = Author;
