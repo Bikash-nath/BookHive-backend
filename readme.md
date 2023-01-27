@@ -43,4 +43,6 @@ In case of more serious matters, like bug reports and other unexpected behavior,
 
 <br>
 
-<h3 align="center">Loved this project?? If yes, don't forget to give it a ⭐ and share it with your friends 😃</h3>
+<h3 align="center">
+Loved this project?? If yes, don't forget to show your love ❤️ by putting a ⭐ on this project ✌️
+</h3>
