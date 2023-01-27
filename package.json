@@ -1,7 +1,7 @@
 {
-  "name": "BookHive",
+  "name": "bookhive",
   "version": "1.0.0",
-  "description": "A backend for ",
+  "description": "A backend  for accessing millions of free audiobooks, ePubs, PDFs, magazines and podcasts.",
   "main": "app.js",
   "scripts": {
     "start": "node server.js",
@@ -32,6 +32,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Bikash-nath/BookBuddy-backend"
+    "url": "https://github.com/Bikash-nath/BookHive-backend"
   }
 }
