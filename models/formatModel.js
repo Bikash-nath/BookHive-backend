@@ -7,7 +7,7 @@ const formatSchema = new mongoose.Schema({
   type: {
     type: String,
     enum: {
-      values: ['Audiobook', 'EPUB', 'PDF'],
+      values: ['Audiobook', 'EPUB', 'PDF', 'Ebook'],
     },
   },
   length: {
@@ -17,6 +17,10 @@ const formatSchema = new mongoose.Schema({
   link: {
     type: String,
     trim: true,
+  },
+  book: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Book',
   },
 });
 

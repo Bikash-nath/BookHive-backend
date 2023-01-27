@@ -8,7 +8,6 @@ const authorSchema = new mongoose.Schema({
     unique: true,
     required: [true, 'A book must have a title'],
     maxlength: [80, 'A book title must have atmost 80 characters'],
-    minlength: [10, 'A book title must have atleast 10 characters'],
   },
   slug: { type: String, trim: true },
   imageSm: {
@@ -72,7 +71,7 @@ authorSchema.virtual('reviews', {
 });
 
 authorSchema.pre('save', function (next) {
-  this.slug = slugify(this.name + this.ISBN_10, { lower: true });
+  this.slug = slugify(this.name + '-' + this._id, { lower: true });
   next();
 });
 

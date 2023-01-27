@@ -9,7 +9,6 @@ const bookSchema = new mongoose.Schema(
       unique: true,
       required: [true, 'A book must have a title'],
       maxlength: [80, 'A book title must have atmost 80 characters'],
-      minlength: [10, 'A book title must have atleast 10 characters'],
     },
     slug: { type: String, trim: true },
     ISBN_10: {
@@ -43,6 +42,7 @@ const bookSchema = new mongoose.Schema(
     description: {
       type: String,
       trim: true,
+      minlength: [40, 'A book description must have atleast 40 characters'],
     },
     image: {
       type: String,
@@ -71,7 +71,7 @@ const bookSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    format: [
+    formats: [
       {
         type: mongoose.Schema.ObjectId,
         ref: 'Format',

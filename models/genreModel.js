@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const slugify = require('slugify');
 
 const genreSchema = new mongoose.Schema({
   title: {
@@ -9,7 +10,7 @@ const genreSchema = new mongoose.Schema({
     trim: true,
     unique: true,
     required: [true, 'A genre must have a title'],
-    maxlength: [30, 'A genre title must have atmost 30 characters'],
+    maxlength: [50, 'A genre title must have atmost 30 characters'],
   },
   slug: { type: String, trim: true },
   books: [
