@@ -4,7 +4,7 @@ const { promisify } = require('util');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
-const sendEmail = require('../utils/email');
+// const sendEmail = require('../utils/email');
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -144,16 +144,15 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   console.warn('message:-', message);
 
   try {
-    await sendEmail({
-      email: user.email,
-      subject: 'Password reset token ⚠️',
-      message,
-    });
-
-    res.status(200).json({
-      status: 'success',
-      message: 'Token sent to email!',
-    });
+    // await sendEmail({
+    //   email: user.email,
+    //   subject: 'Password reset token ⚠️',
+    //   message,
+    // });
+    // res.status(200).json({
+    //   status: 'success',
+    //   message: 'Token sent to email!',
+    // });
   } catch (err) {
     user.passwordResetToken = undefined;
     user.passwordReset = undefined;

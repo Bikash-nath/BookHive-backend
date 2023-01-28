@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const House = require('./houseModel');
 
 const reviewSchema = new mongoose.Schema(
   {
@@ -48,7 +47,7 @@ const reviewSchema = new mongoose.Schema(
 
 // QUERY MIDDLEWARE
 reviewSchema.pre(/^find/, function (next) {
-  //child populate - house !required
+  //child populate - book !required
   this.populate({
     path: 'user',
     select: 'name photo',

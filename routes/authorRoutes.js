@@ -7,7 +7,7 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(authorController.getAllauthors)
+  .get(authorController.getAllAuthors)
   .post(authController.protect, authController.restrictTo('author'), authorController.createAuthor);
 
 router
