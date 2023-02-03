@@ -22,6 +22,7 @@ const bookSchema = new mongoose.Schema(
     language: {
       type: String,
       trim: true,
+      default: 'English',
     },
     publisher: {
       type: String,

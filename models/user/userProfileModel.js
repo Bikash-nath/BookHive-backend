@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
-const userSchema = new mongoose.Schema({
+const userProfileSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Please tell us your name!'],
@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
       validator: (date) => {
         return date <= new Date(new Date().setFullYear(new Date().getFullYear() - 10));
       },
-      message: 'Your Age should be greater than 10 years',
+      message: 'Your Age should be greater than 6 years',
     },
   },
   address: {
@@ -45,13 +45,9 @@ const userSchema = new mongoose.Schema({
     },
   },
   occupation: String,
-  library: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'Library',
-  },
   role: {
     type: String,
-    enum: ['user', 'creator', 'author', 'admin'],
+    enum: ['user', 'author', 'creator', 'admin'],
     default: 'user',
   },
   password: {
@@ -79,28 +75,16 @@ const userSchema = new mongoose.Schema({
     default: false,
     select: false,
   },
-  devices: [
-    {
-      name: String,
-      ipAddress: String,
-      lastLoggedIn: Date,
-      active: {
-        type: Boolean,
-        default: true,
-      },
-      select: false,
-    },
-  ],
 });
 
 // Virtual populate - parent to child reference
-userSchema.virtual('reviews', {
+userProfileSchema.virtual('reviews', {
   ref: 'Review',
   foreignField: 'user', //in Review modal
   localField: '_id',
 });
 
-userSchema.pre('save', async function (next) {
+userProfileSchema.pre('save', async function (next) {
   // Only run this function if password was actually modified
   if (!this.isModified('password')) return next();
 
@@ -112,7 +96,7 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-userSchema.pre('save', function (next) {
+userProfileSchema.pre('save', function (next) {
   if (!this.isModified('password') || this.isNew) {
     return next();
   }
@@ -120,11 +104,11 @@ userSchema.pre('save', function (next) {
   next();
 });
 
-userSchema.methods.correctPassword = async (candidatePassword, userPassword) => {
+userProfileSchema.methods.correctPassword = async (candidatePassword, userPassword) => {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+userProfileSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
     // True if password was changed after JWT was issued
@@ -133,7 +117,7 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   return false;
 };
 
-userSchema.methods.createPasswordResetToken = function () {
+userProfileSchema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString('hex');
 
   //Encrypted version of resetToken (save in DB)
@@ -143,5 +127,5 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken;
 };
 
-const User = mongoose.model('User', userSchema);
-module.exports = User;
+const UserProfile = mongoose.model('UserProfile', userProfileSchema);
+module.exports = UserProfile;

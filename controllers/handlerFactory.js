@@ -24,8 +24,8 @@ exports.getOne = (Model, popOptions) =>
 exports.getAll = (Model) =>
   catchAsync(async (req, res, next) => {
     const features = new APIFeatures(Model.find(), { ...req.query, ...req.docFilter }).filter().sort().limitFields();
-
     const doc = await features.query;
+    // const doc = await Model.find();
 
     res.status(200).json({
       status: 'success',
