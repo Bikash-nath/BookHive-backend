@@ -1,5 +1,5 @@
 const express = require('express');
-const userController = require('../controllers/userController');
+const userProfileController = require('../controllers/userProfileController');
 const authController = require('../controllers/authController');
 
 const router = express.Router({ mergeParams: true });
@@ -12,11 +12,11 @@ router.post('/forgotPassword', authController.forgotPassword);
 
 router.use(authController.protect);
 
-router.get('/getMe', userController.setUserId, userController.getMe());
-router.patch('/updateMe', userController.updateMe);
+router.get('/getMe', userProfileController.setUserId, userProfileController.getMe());
+router.patch('/updateMe', userProfileController.updateMe);
 router.patch('/updatePassword', authController.updatePassword);
-router.delete('/deleteMe', userController.deleteMe);
+router.delete('/deleteMe', userProfileController.deleteMe);
 
-router.route('/:id').get(userController.getUser);
+router.route('/:id').get(userProfileController.getUser);
 
 module.exports = router;

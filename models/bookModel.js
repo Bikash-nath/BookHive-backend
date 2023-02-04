@@ -49,6 +49,10 @@ const bookSchema = new mongoose.Schema(
       type: String,
       required: [true, 'A book must have a cover image'],
     },
+    addedOn: {
+      type: Date,
+      default: Date.now,
+    },
     ratingsAverage: {
       type: Number,
       default: 1,
@@ -104,6 +108,15 @@ bookSchema.virtual('reviews', {
   ref: 'Review',
   foreignField: 'book', //in Review modal
   localField: '_id',
+});
+
+// QUERY MIDDLEWARE - child populate
+reviewSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'author',
+    select: 'name slug imageSm',
+  });
+  next();
 });
 
 // 2.DOCUMENT MIDDLEWARE: runs before .save() and .create()

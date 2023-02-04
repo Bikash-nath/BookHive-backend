@@ -52,6 +52,10 @@ const authorSchema = new mongoose.Schema({
     max: [5, 'Rating must be below 5.0'],
     set: (val) => Math.round(val * 10) / 10,
   },
+  followerRank: {
+    type: Number,
+    default: 0, //based on fetched data
+  },
   totalFollowers: {
     type: Number,
     default: 0,
@@ -67,6 +71,12 @@ const authorSchema = new mongoose.Schema({
 authorSchema.virtual('reviews', {
   ref: 'Review',
   foreignField: 'author', //in Review modal
+  localField: '_id',
+});
+
+bookSchema.virtual('reviews', {
+  ref: 'Book',
+  foreignField: 'author', //in Book modal
   localField: '_id',
 });
 

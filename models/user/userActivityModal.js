@@ -19,23 +19,20 @@ const userActivitySchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'UserLibrary',
   },
-  wishlist: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'UserLibrary',
-  },
-  readHistoy: [
+  readHistory: [
     {
       book: {
         type: mongoose.Schema.ObjectId,
         ref: 'Book',
       },
+      //remainingTime & lastReadAt
       createdAt: {
         type: Date,
         default: Date.now,
       },
     },
   ],
-  downloadHistoy: [
+  downloadHistory: [
     {
       book: {
         type: mongoose.Schema.ObjectId,
