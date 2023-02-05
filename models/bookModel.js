@@ -53,24 +53,34 @@ const bookSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-    ratingsAverage: {
-      type: Number,
-      default: 1,
-      min: [1, 'Rating must be above 1.0'],
-      max: [5, 'Rating must be below 5.0'],
-      set: (val) => Math.round(val * 10) / 10,
-    },
-    ratingsQuantity: {
+    ratingAverage: {
       type: Number,
       default: 0,
+      min: 0,
+      max: 5,
     },
-    bestsellerRank: {
+    ratingsCount: {
       type: Number,
       default: 0,
     },
     totalFavourites: {
       type: Number,
       default: 0,
+    },
+    bestsellerRank: {
+      type: Number, //calculated
+      default: 0,
+      select: false,
+    },
+    ratingsRank: {
+      type: Number,
+      default: 0, //fetched data
+      select: false,
+    },
+    ratingsTotal: {
+      type: Number,
+      default: 0, //fetched data
+      select: false,
     },
     verified: {
       type: Boolean,
@@ -111,13 +121,30 @@ bookSchema.virtual('reviews', {
 });
 
 // QUERY MIDDLEWARE - child populate
-reviewSchema.pre(/^find/, function (next) {
+bookSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'author',
     select: 'name slug imageSm',
   });
   next();
 });
+
+/*
+bookSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'formats',
+    select: 'type length link',
+  });
+  next();
+});
+
+bookSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'genres',
+    select: 'title slug',
+  });
+  next();
+});*/
 
 // 2.DOCUMENT MIDDLEWARE: runs before .save() and .create()
 bookSchema.pre('save', function (next) {

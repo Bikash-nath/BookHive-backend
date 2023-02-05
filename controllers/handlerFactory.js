@@ -5,9 +5,9 @@ const filterObj = require('../utils/filterObject');
 
 exports.getOne = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
-    let query = Model.findOne({ _id: req.params.id, ...req.docFilter });
-    if (popOptions) query = query.populate(popOptions);
-    const doc = await query.limitFields();
+    let doc = await Model.findOne({ _id: req.params.id, ...req.docFilter });
+    // if (popOptions) query = query.populate(popOptions);
+    // const doc = await query.limitFields();
 
     if (!doc) {
       return next(new AppError(`No ${Model} found with that ID`, 404));

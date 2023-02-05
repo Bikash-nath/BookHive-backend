@@ -41,24 +41,38 @@ const authorSchema = new mongoose.Schema({
   twitter: {
     type: String,
   },
-  numReviews: {
+  ratingAverage: {
     type: Number,
     default: 0,
+    min: 0,
+    max: 5,
   },
-  rating: {
+  ratingsCount: {
     type: Number,
-    default: 1,
-    min: [1, 'Rating must be above 1.0'],
-    max: [5, 'Rating must be below 5.0'],
-    set: (val) => Math.round(val * 10) / 10,
-  },
-  followerRank: {
-    type: Number,
-    default: 0, //based on fetched data
+    default: 0,
   },
   totalFollowers: {
     type: Number,
     default: 0,
+  },
+  followersCount: {
+    type: Number, //calculated
+    default: 0,
+    select: false,
+  },
+  ratingsRank: {
+    type: Number,
+    default: 0, //fetched data
+    select: false,
+  },
+  followerRank: {
+    type: Number,
+    default: 0, //fetched data
+    select: false,
+  },
+  topBook: {
+    type: String,
+    trim: true, //fetched data
   },
   genres: [
     {
@@ -74,7 +88,7 @@ authorSchema.virtual('reviews', {
   localField: '_id',
 });
 
-bookSchema.virtual('reviews', {
+authorSchema.virtual('books', {
   ref: 'Book',
   foreignField: 'author', //in Book modal
   localField: '_id',

@@ -8,7 +8,7 @@ const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const bookRouter = require('./routes/bookRoutes');
 const authorRouter = require('./routes/authorRoutes');
-const userRouter = require('./routes/userRoutes');
+const userProfileRouter = require('./routes/userProfileRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const cors = require('cors');
 
@@ -40,8 +40,8 @@ app.use((req, res, next) => {
 // 2) ROUTES
 app.use('/api/books', bookRouter);
 app.use('/api/authors', authorRouter);
-app.use('/api/users', userRouter);
 app.use('/api/reviews', reviewRouter);
+app.use('/api/users/profile', userProfileRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
