@@ -51,21 +51,16 @@ const authorSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  totalFollowers: {
+  followersCount: {
     type: Number,
     default: 0,
-  },
-  followersCount: {
-    type: Number, //calculated
-    default: 0,
-    select: false,
   },
   ratingsRank: {
     type: Number,
     default: 0, //fetched data
     select: false,
   },
-  followerRank: {
+  totalFollowers: {
     type: Number,
     default: 0, //fetched data
     select: false,

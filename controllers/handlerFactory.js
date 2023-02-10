@@ -21,11 +21,15 @@ exports.getOne = (Model, popOptions) =>
     });
   });
 
-exports.getAll = (Model) =>
+exports.getAll = (Model, projection) =>
   catchAsync(async (req, res, next) => {
-    const features = new APIFeatures(Model.find(), { ...req.query, ...req.docFilter }).filter().sort().limitFields();
+    const features = new APIFeatures(Model.find({}, projection), { ...req.query, ...req.docFilter })
+      .filter()
+      .sort()
+      .limitFields();
     const doc = await features.query;
-    // const doc = await Model.find();
+
+    // const doc = await Model.find({}).select(projection);
 
     res.status(200).json({
       status: 'success',
