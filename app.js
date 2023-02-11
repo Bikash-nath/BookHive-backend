@@ -8,6 +8,7 @@ const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const bookRouter = require('./routes/bookRoutes');
 const authorRouter = require('./routes/authorRoutes');
+const genreRouter = require('./routes/genreRoutes');
 const userProfileRouter = require('./routes/userProfileRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const cors = require('cors');
@@ -40,6 +41,7 @@ app.use((req, res, next) => {
 // 2) ROUTES
 app.use('/api/books', bookRouter);
 app.use('/api/authors', authorRouter);
+app.use('/api/genres', genreRouter);
 app.use('/api/reviews', reviewRouter);
 app.use('/api/users/profile', userProfileRouter);
 

@@ -2,6 +2,7 @@ const Book = require('../models/bookModel');
 const factory = require('./handlerFactory');
 // const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
+const Genre = require('../models/genreModel');
 
 exports.getAllBooks = factory.getAll(Book, 'title image author slug'); //{_id:0} - fields without _id
 exports.getBook = factory.getOne(Book, { path: 'reviews' });
@@ -11,15 +12,25 @@ exports.deleteBook = factory.deleteOne(Book);
 
 exports.getSimilarBooks = catchAsync(async (req, res, next) => {
   const book = await Book.findById(req.params.id);
-  const similarBooks = [];
-  console.log(similarBooks, '\n');
-
-  book.genres.forEach(async (genre) => {
-    const similarBook = await Book.find({ genres: genre });
-    console.log('\n\n---->\n');
-    similarBook.forEach((book) => similarBooks.push(book));
-    console.log(similarBook.length, '\n');
+  let genreBooksList = [];
+  let authorBooksList = [];
+  book.genres.forEach(async (genreId) => {
+    const genre = await Genre.findById(genreId);
+    // genreBooksList.forEach((book) => genreBooksList.push(book));
+    console.log('genre:->', genre.books);
+    genreBooksList = genre.books;
+    // genreBooksList = [...genreBooksList, ...genre.books];
   });
+  console.log('\n\n---->\n');
+  console.log(genreBooksList);
+  const similarBooks = [];
+
+  genreBooksList.forEach((genreBook) => {
+    if (genreBook.origin === book.origin && genreBook.language === book.language) {
+      similarBooks.push(genreBook);
+    }
+  });
+
   console.log('\n\n---->\n');
   console.log(similarBooks, '\n');
 
