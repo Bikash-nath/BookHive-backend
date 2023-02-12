@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.route('/').get(genreController.getAllGenres);
 
-router.route('/:id').get(genreController.getGenreBooks);
+router.route('/:slug').get(genreController.getGenreBooks);
 
 router.use(authController.protect);
 

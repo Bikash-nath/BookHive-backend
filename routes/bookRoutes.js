@@ -11,15 +11,15 @@ router
   .post(authController.protect, authController.restrictTo('author'), bookController.createBook);
 
 router
-  .route('/:id')
+  .route('/:slug')
   .get(bookController.getBook)
   .patch(authController.protect, authController.restrictTo('author', 'admin'), bookController.updateBook)
   .delete(authController.protect, authController.restrictTo('author', 'admin'), bookController.deleteBook);
 
-router.route('/:id/similarBooks').get(bookController.getSimilarBooks);
+router.route('/:slug/similarBooks').get(bookController.getSimilarBooks);
 
 // Nested routes
-router.use('/:bookId/reviews', reviewRouter);
+router.use('/:bookSlug/reviews', reviewRouter);
 
 router.use(authController.protect);
 
