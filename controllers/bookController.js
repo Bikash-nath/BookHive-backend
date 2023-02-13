@@ -10,6 +10,18 @@ exports.createBook = factory.createOne(Book);
 exports.updateBook = factory.updateOne(Book);
 exports.deleteBook = factory.deleteOne(Book);
 
+exports.searchBooks = catchAsync(async (req, res, next) => {
+  const books = await Book.find({ title: req.query.keyword });
+
+  res.status(200).json({
+    status: 'success',
+    results: books.length,
+    data: {
+      data: books,
+    },
+  });
+});
+
 exports.getSimilarBooks = catchAsync(async (req, res, next) => {
   const book = await Book.findById(req.params.id);
   let genreBooksList = [];

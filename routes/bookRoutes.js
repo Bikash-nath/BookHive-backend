@@ -18,6 +18,8 @@ router
 
 router.route('/:slug/similarBooks').get(bookController.getSimilarBooks);
 
+router.route('/searchBooks').get(bookController.searchBooks);
+
 // Nested routes
 router.use('/:bookSlug/reviews', reviewRouter);
 

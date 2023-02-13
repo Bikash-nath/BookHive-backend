@@ -4,9 +4,10 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-router.route('/').get(genreController.getAllGenres);
+// router.route('/top').get(genreController.getTopGenres);
+router.route('/top').get(genreController.getAllGenres);
 
-router.route('/:slug').get(genreController.getGenreBooks);
+router.route('/:slug/books').get(genreController.getGenreBooks);
 
 router.use(authController.protect);
 

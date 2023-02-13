@@ -1,5 +1,6 @@
 node_modules/
 uploads/
+public/
 dev-data/
 loader/
 *.env

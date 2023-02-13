@@ -4,7 +4,7 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
 exports.getAllAuthors = factory.getAll(Author, 'name imageSm author slug');
-exports.getAuthor = factory.getOne(Author, { path: 'reviews' });
+exports.getAuthor = factory.getOne(Author, { path: 'reviews' }); //remove imageSm, _id
 exports.createAuthor = factory.createOne(Author);
 exports.updateAuthor = factory.updateOne(Author);
 exports.deleteAuthor = factory.deleteOne(Author);

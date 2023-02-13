@@ -10,14 +10,27 @@ const formatSchema = new mongoose.Schema({
       values: ['Audiobook', 'EPUB', 'PDF', 'Ebook'],
     },
   },
-  length: {
-    type: String,
-    trim: true,
+  pages: {
+    count: Number,
+    link: {
+      type: String,
+      trim: true,
+    },
   },
-  link: {
-    type: String,
-    trim: true,
-  },
+  chapters: [
+    {
+      count: Number,
+      title: String,
+      length: {
+        type: Number,
+        trim: true,
+      },
+      link: {
+        type: String,
+        trim: true,
+      },
+    },
+  ],
   book: {
     type: mongoose.Schema.ObjectId,
     ref: 'Book',
