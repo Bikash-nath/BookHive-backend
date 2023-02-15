@@ -45,9 +45,14 @@ const bookSchema = new mongoose.Schema(
       trim: true,
       minlength: [40, 'A book description must have atleast 40 characters'],
     },
-    image: {
+    imageSm: {
       type: String,
       required: [true, 'A book must have a cover image'],
+      default: '/img/books/book_img.jpg',
+    },
+    imageLg: {
+      type: String,
+      default: '/img/books/book_img-lg.jpg',
     },
     addedOn: {
       type: Date,
@@ -145,12 +150,6 @@ bookSchema.pre(/^find/, function (next) {
   });
   next();
 });*/
-
-// 2.DOCUMENT MIDDLEWARE: runs before .save() and .create()
-bookSchema.pre('save', function (next) {
-  this.slug = slugify(this.title + '-' + this.ISBN_10 || this.ISBN_13, { lower: true });
-  next();
-});
 
 const Book = mongoose.model('Book', bookSchema);
 module.exports = Book;

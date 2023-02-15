@@ -23,7 +23,7 @@ const genreSchema = new mongoose.Schema({
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 genreSchema.pre('save', function (next) {
-  this.slug = slugify(this.title, { lower: true });
+  this.slug = slugify(this.title);
   next();
 });
 

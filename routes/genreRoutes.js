@@ -9,6 +9,4 @@ router.route('/top').get(genreController.getAllGenres);
 
 router.route('/:slug/books').get(genreController.getGenreBooks);
 
-router.use(authController.protect);
-
 module.exports = router;

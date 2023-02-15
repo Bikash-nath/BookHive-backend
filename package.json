@@ -9,11 +9,13 @@
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": "node --inspect server.js",
     "load": "nodemon loader/loadData.js",
-    "update": "nodemon loader/updateData.js"
+    "update-authors": "nodemon loader/updateAuthors.js",
+    "update-books": "nodemon loader/updateBooks.js"
   },
   "author": "Bikash",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.267.0",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",

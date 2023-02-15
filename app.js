@@ -45,6 +45,8 @@ app.use('/api/genres', genreRouter);
 app.use('/api/reviews', reviewRouter);
 app.use('/api/users/profile', userProfileRouter);
 
+app.use(express.static('public'));
+
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
