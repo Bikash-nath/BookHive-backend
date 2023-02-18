@@ -23,16 +23,19 @@ class APIFeatures {
     return this;
   }
 
-  limitFields() {
-    const fields = '-id -__v';
-    this.query = this.query.select(fields);
-
+  limitFields(fields) {
+    if (this.queryString.fields) {
+      const fields = this.queryString.fields.split(',').join(' ');
+      this.query = this.query.select(fields);
+    } else {
+      this.query = this.query.select('-id -__v');
+    }
     return this;
   }
 
   paginate() {
     const page = this.queryString.page * 1 || 1;
-    const limit = 30; //this.queryString.limit * 1 || 100;
+    const limit = this.queryString.limit * 1 || 30;
     const skip = (page - 1) * limit;
 
     this.query = this.query.skip(skip).limit(limit);

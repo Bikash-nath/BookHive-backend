@@ -4,6 +4,20 @@ const factory = require('./handlerFactory');
 const catchAsync = require('../utils/catchAsync');
 const Genre = require('../models/genreModel');
 
+exports.aliasBestsellers = (req, res, next) => {
+  req.query.limit = 30;
+  req.query.sort = '-bestsellerRank,-ratingsTotal';
+  req.query.fields = 'title image author slug';
+  next();
+};
+
+exports.aliasAudiobooks = (req, res, next) => {
+  req.query.limit = 30;
+  req.query.sort = '-bestsellerRank,-ratingsTotal';
+  req.query.fields = 'title image author slug';
+  next();
+};
+
 exports.getAllBooks = factory.getAll(Book, 'title image author slug'); //{_id:0} - fields without _id
 exports.getBook = factory.getOne(Book, { path: 'reviews' });
 exports.createBook = factory.createOne(Book);

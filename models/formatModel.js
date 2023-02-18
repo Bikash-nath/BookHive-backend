@@ -5,10 +5,7 @@ const bcrypt = require('bcryptjs');
 
 const formatSchema = new mongoose.Schema({
   bookType: {
-    type: String,
-    enum: {
-      values: ['audiobook', 'epub', 'pdf', 'ebook'],
-    },
+    type: String, //'audiobook', 'epub', 'pdf', 'ebook'
   },
   pages: {
     count: Number,

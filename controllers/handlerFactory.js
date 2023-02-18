@@ -5,7 +5,7 @@ const filterObj = require('../utils/filterObject');
 
 exports.getOne = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
-    let doc = await Model.findOne({ slug: req.params.slug, ...req.docFilter });
+    let doc = await Model.findOne({ slug: req.params.slug, ...req.docFilter }).limitFields();
     // if (popOptions) query = query.populate(popOptions);
     // const doc = await query.limitFields();
     if (!doc) {
@@ -20,10 +20,11 @@ exports.getOne = (Model, popOptions) =>
 
 exports.getAll = (Model, projection) =>
   catchAsync(async (req, res, next) => {
-    const features = new APIFeatures(Model.find({}, projection), { ...req.query, ...req.docFilter })
+    const features = new APIFeatures(Model.find({}), { ...req.query, ...req.docFilter }) //, projection
+      .limitFields()
       .filter()
       .sort()
-      .limitFields();
+      .paginate();
     const doc = await features.query;
 
     // const doc = await Model.find({}).select(projection);

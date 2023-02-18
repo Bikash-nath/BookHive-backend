@@ -4,21 +4,19 @@ const authController = require('../controllers/authController');
 const reviewRouter = require('./reviewRoutes');
 
 const router = express.Router();
-
 router
-  .route('/')
-  .get(bookController.getAllBooks)
-  .post(authController.protect, authController.restrictTo('author'), bookController.createBook);
+  .get('/bestsellers', bookController.aliasBestsellers, bookController.getAllBooks)
+  .get('/audiobooks', bookController.aliasAudiobooks, bookController.getAllBooks)
+  .get('/latest', bookController.getAllBooks);
 
-router
-  .route('/:slug')
-  .get(bookController.getBook)
-  .patch(authController.protect, authController.restrictTo('author', 'admin'), bookController.updateBook)
-  .delete(authController.protect, authController.restrictTo('author', 'admin'), bookController.deleteBook);
+router.route('/:slug').get(bookController.getBook);
 
 router.route('/:slug/similarBooks').get(bookController.getSimilarBooks);
 
 router.route('/searchBooks').get(bookController.searchBooks);
+
+// .patch(authController.protect, authController.restrictTo('author', 'admin'), bookController.updateBook)
+// .delete(authController.protect, authController.restrictTo('author', 'admin'), bookController.deleteBook);
 
 // Nested routes
 router.use('/:bookSlug/reviews', reviewRouter);

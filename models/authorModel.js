@@ -37,6 +37,11 @@ const authorSchema = new mongoose.Schema(
     twitter: {
       type: String,
     },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      select: false,
+    },
     ratingAverage: {
       type: Number,
       default: 0,

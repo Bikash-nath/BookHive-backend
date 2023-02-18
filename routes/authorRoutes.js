@@ -5,16 +5,14 @@ const reviewRouter = require('./reviewRoutes');
 
 const router = express.Router();
 
-router
-  .route('/')
-  .get(authorController.getAllAuthors)
-  .post(authController.protect, authController.restrictTo('author'), authorController.createAuthor);
+router.get('/top', authController.aliasTopAuthors, authController.getAllAuthors);
 
-router
-  .route('/:slug')
-  .get(authorController.getAuthor)
-  .patch(authController.protect, authController.restrictTo('author', 'admin'), authorController.updateAuthor)
-  .delete(authController.protect, authController.restrictTo('author', 'admin'), authorController.deleteAuthor);
+// .post(authController.protect, authController.restrictTo('author'), authorController.createAuthor);
+
+router.route('/:slug').get(authorController.getAuthor);
+
+// .delete(authController.protect, authController.restrictTo('author', 'admin'), authorController.deleteAuthor);
+// .patch(authController.protect, authController.restrictTo('author', 'admin'), authorController.updateAuthor)
 
 // Nested routes
 router.use('/:authorSlug/reviews', reviewRouter);

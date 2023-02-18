@@ -42,7 +42,7 @@ const bookSchema = new mongoose.Schema(
     description: {
       type: String,
       trim: true,
-      minlength: [40, 'A book description must have atleast 40 characters'],
+      minlength: [30, 'A book description must have atleast 30 characters'],
     },
     image: {
       path: {
@@ -54,10 +54,6 @@ const bookSchema = new mongoose.Schema(
         height: String,
         width: String,
       },
-    },
-    addedOn: {
-      type: Date,
-      default: Date.now,
     },
     ratingAverage: {
       type: Number,
@@ -86,6 +82,11 @@ const bookSchema = new mongoose.Schema(
     ratingsTotal: {
       type: Number,
       default: 0, //fetched data
+      select: false,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
       select: false,
     },
     verified: {
