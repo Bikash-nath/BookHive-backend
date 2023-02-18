@@ -4,10 +4,10 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
 const formatSchema = new mongoose.Schema({
-  type: {
+  bookType: {
     type: String,
     enum: {
-      values: ['Audiobook', 'EPUB', 'PDF', 'Ebook'],
+      values: ['audiobook', 'epub', 'pdf', 'ebook'],
     },
   },
   pages: {

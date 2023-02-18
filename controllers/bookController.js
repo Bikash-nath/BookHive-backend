@@ -11,7 +11,10 @@ exports.updateBook = factory.updateOne(Book);
 exports.deleteBook = factory.deleteOne(Book);
 
 exports.searchBooks = catchAsync(async (req, res, next) => {
-  const books = await Book.find({ title: req.query.keyword });
+  const keyword = req.query.keyword;
+  console.log(keyword);
+  const books = await Book.find({ title: `/${req.query.keyword}/` });
+  // const books = await Book.find({ title: { $regex: `/${}/` } });
 
   res.status(200).json({
     status: 'success',

@@ -27,14 +27,14 @@ genreSchema.pre('save', function (next) {
   next();
 });
 
-// QUERY MIDDLEWARE - child populate
-genreSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'books',
-    select: 'title image author slug',
-  });
-  next();
-});
+// QUERY MIDDLEWARE - two-way populate
+// genreSchema.pre('findOne', function (next) {
+//   this.populate({
+//     path: 'books',
+//     select: 'title image author slug',
+//   });
+//   next();
+// });
 
 const Genre = mongoose.model('Genre', genreSchema);
 module.exports = Genre;

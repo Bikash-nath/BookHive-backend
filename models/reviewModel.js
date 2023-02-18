@@ -51,9 +51,8 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
-// QUERY MIDDLEWARE
+// QUERY MIDDLEWARE - child populate
 reviewSchema.pre(/^find/, function (next) {
-  //child populate - book !required
   this.populate({
     path: 'user',
     select: 'name photo',

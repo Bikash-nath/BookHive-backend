@@ -17,7 +17,10 @@ exports.getTopGenres = catchAsync(async (req, res, next) => {
 });*/
 
 exports.getAllGenres = factory.getAll(Genre, 'title slug'); //{_id:0} - fields without _id
-exports.getGenreBooks = factory.getOne(Genre);
+exports.getGenreBooks = factory.getOne(Genre).populate({
+  path: 'books',
+  select: 'title image author slug',
+});
 
 // exports.createGenre = factory.createOne(Genre);
 // exports.updateGenre = factory.updateOne(Genre);

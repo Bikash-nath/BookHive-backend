@@ -1,14 +1,13 @@
 const mongoose = require('mongoose');
-const slugify = require('slugify');
+// const slugify = require('slugify');
 
 const bookSchema = new mongoose.Schema(
   {
     title: {
       type: String,
       trim: true,
-      unique: true,
       required: [true, 'A book must have a title'],
-      maxlength: [80, 'A book title must have atmost 80 characters'],
+      maxlength: [120, 'A book title must have atmost 120 characters'],
     },
     slug: { type: String, trim: true },
     ISBN_10: {
@@ -45,14 +44,16 @@ const bookSchema = new mongoose.Schema(
       trim: true,
       minlength: [40, 'A book description must have atleast 40 characters'],
     },
-    imageSm: {
-      type: String,
-      required: [true, 'A book must have a cover image'],
-      default: '/img/books/book_img.jpg',
-    },
-    imageLg: {
-      type: String,
-      default: '/img/books/book_img-lg.jpg',
+    image: {
+      path: {
+        type: String,
+        required: [true, 'A book must have a cover image'],
+        default: '/img/books/book_img.jpg',
+      },
+      dimensions: {
+        height: String,
+        width: String,
+      },
     },
     addedOn: {
       type: Date,
@@ -129,27 +130,26 @@ bookSchema.virtual('reviews', {
 bookSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'author',
-    select: 'name slug imageSm',
+    select: 'name slug image',
   });
   next();
 });
 
-/*
-bookSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'formats',
-    select: 'type length link',
-  });
-  next();
-});
-
-bookSchema.pre(/^find/, function (next) {
+bookSchema.pre(/^findOne/, function (next) {
   this.populate({
     path: 'genres',
     select: 'title slug',
   });
   next();
-});*/
+});
+
+bookSchema.pre(/^findOne/, function (next) {
+  this.populate({
+    path: 'formats',
+    select: 'type pages',
+  });
+  next();
+});
 
 const Book = mongoose.model('Book', bookSchema);
 module.exports = Book;
