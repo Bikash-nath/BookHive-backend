@@ -27,8 +27,10 @@ class APIFeatures {
     if (this.queryString.fields) {
       const fields = this.queryString.fields.split(',').join(' ');
       this.query = this.query.select(fields);
+      console.log(fields);
     } else {
-      this.query = this.query.select('-id -__v');
+      this.query = this.query.select('id -id -__v');
+      console.log(this.query);
     }
     return this;
   }

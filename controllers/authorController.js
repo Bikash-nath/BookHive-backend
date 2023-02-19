@@ -5,8 +5,8 @@ const catchAsync = require('../utils/catchAsync');
 
 exports.aliasTopAuthors = (req, res, next) => {
   req.query.limit = 30;
-  req.query.sort = '-ratingsRank,-totalFollowers';
-  req.query.fields = 'name image author slug';
+  req.query.sort = '-totalFollowers,-ratingsAvg';
+  req.query.fields = 'name image author slug,id,-id';
   next();
 };
 

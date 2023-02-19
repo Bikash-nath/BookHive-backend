@@ -12,7 +12,7 @@ const genreSchema = new mongoose.Schema({
     required: [true, 'A genre must have a title'],
     maxlength: [50, 'A genre title must have atmost 30 characters'],
   },
-  slug: { type: String, trim: true },
+  slug: { type: String, trim: true, unique: true },
   books: [
     {
       type: mongoose.Schema.ObjectId,
@@ -20,6 +20,8 @@ const genreSchema = new mongoose.Schema({
     },
   ],
 });
+
+genreSchema.index({ slug: 1 });
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 genreSchema.pre('save', function (next) {

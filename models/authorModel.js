@@ -10,7 +10,7 @@ const authorSchema = new mongoose.Schema(
       required: [true, 'Author must have a name'],
       maxlength: [80, 'Author name must have atmost 80 characters'],
     },
-    slug: { type: String, trim: true },
+    slug: { type: String, trim: true, unique: true },
     image: {
       type: String,
       required: [true, 'Author must have a cover image'],
@@ -42,7 +42,7 @@ const authorSchema = new mongoose.Schema(
       default: Date.now,
       select: false,
     },
-    ratingAverage: {
+    ratings: {
       type: Number,
       default: 0,
       min: 0,
@@ -56,7 +56,7 @@ const authorSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    ratingsRank: {
+    ratingsAvg: {
       type: Number,
       default: 0, //fetched data
       select: false,
@@ -88,6 +88,9 @@ const authorSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+authorSchema.index({ slug: 1 });
+authorSchema.index({ ratingsAvg: -1, totalFollowers: -1 });
 
 authorSchema.virtual('reviews', {
   ref: 'Review',

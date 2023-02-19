@@ -1,33 +1,38 @@
-const crypto = require('crypto');
 const mongoose = require('mongoose');
-const validator = require('validator');
-const bcrypt = require('bcryptjs');
 
 const formatSchema = new mongoose.Schema({
-  bookType: {
-    type: String, //'audiobook', 'epub', 'pdf', 'ebook'
-  },
-  pages: {
-    count: Number,
+  ebook: {
+    fileType: {
+      type: String,
+      enum: ['epub', 'pdf'],
+    },
+    pagesCount: Number,
     link: {
       type: String,
       trim: true,
     },
   },
-  chapters: [
-    {
-      count: Number,
-      title: String,
-      length: {
-        type: Number,
-        trim: true,
+  audiobook: {
+    chapters: [
+      {
+        count: Number,
+        title: String,
+        link: {
+          type: String,
+          trim: true,
+        },
+        length: {
+          hours: Number,
+          mins: Number,
+        },
+        size: Number,
       },
-      link: {
-        type: String,
-        trim: true,
-      },
+    ],
+    releasedYear: {
+      type: Date,
+      select: false,
     },
-  ],
+  },
   book: {
     type: mongoose.Schema.ObjectId,
     ref: 'Book',
@@ -36,3 +41,8 @@ const formatSchema = new mongoose.Schema({
 
 const Format = mongoose.model('Format', formatSchema);
 module.exports = Format;
+
+// fileType: {
+//   type: String,
+//   enum: ['mp3', 'm4b'],
+// },

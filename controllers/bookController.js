@@ -6,19 +6,26 @@ const Genre = require('../models/genreModel');
 
 exports.aliasBestsellers = (req, res, next) => {
   req.query.limit = 30;
-  req.query.sort = '-bestsellerRank,-ratingsTotal';
-  req.query.fields = 'title image author slug';
+  req.query.sort = '-ratingsTotal,-ratingsAvg';
+  req.query.fields = 'title,image,author,slug';
   next();
 };
 
 exports.aliasAudiobooks = (req, res, next) => {
   req.query.limit = 30;
-  req.query.sort = '-bestsellerRank,-ratingsTotal';
+  req.query.sort = '-ratingsAvg,-ratingsTotal';
+  req.query.fields = 'title,image,author,slug';
+  next();
+};
+
+exports.aliasLatestBooks = (req, res, next) => {
+  req.query.limit = 30;
+  req.query.sort = '-ratingsAvg,-createdAt';
   req.query.fields = 'title image author slug';
   next();
 };
 
-exports.getAllBooks = factory.getAll(Book, 'title image author slug'); //{_id:0} - fields without _id
+exports.getAllBooks = factory.getAll(Book); //{_id:0} - fields without _id
 exports.getBook = factory.getOne(Book, { path: 'reviews' });
 exports.createBook = factory.createOne(Book);
 exports.updateBook = factory.updateOne(Book);
@@ -27,8 +34,8 @@ exports.deleteBook = factory.deleteOne(Book);
 exports.searchBooks = catchAsync(async (req, res, next) => {
   const keyword = req.query.keyword;
   console.log(keyword);
-  const books = await Book.find({ title: `/${req.query.keyword}/` });
-  // const books = await Book.find({ title: { $regex: `/${}/` } });
+  // const books = await Book.find({ title: `/${keyword}/` });
+  const books = await Book.find({ title: { $regex: `/${keyword}/` } });
 
   res.status(200).json({
     status: 'success',

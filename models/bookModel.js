@@ -9,7 +9,7 @@ const bookSchema = new mongoose.Schema(
       required: [true, 'A book must have a title'],
       maxlength: [120, 'A book title must have atmost 120 characters'],
     },
-    slug: { type: String, trim: true },
+    slug: { type: String, trim: true, unique: true },
     ISBN_10: {
       type: Number,
       default: 0,
@@ -55,29 +55,31 @@ const bookSchema = new mongoose.Schema(
         width: String,
       },
     },
-    ratingAverage: {
+    ratings: {
       type: Number,
       default: 0,
       min: 0,
       max: 5,
+      select: false,
     },
     ratingsCount: {
       type: Number,
       default: 0,
+      select: false,
     },
     totalFavourites: {
       type: Number,
       default: 0,
+      select: false,
     },
     bestsellerRank: {
       type: Number, //calculated
       default: 0,
       select: false,
     },
-    ratingsRank: {
+    ratingsAvg: {
       type: Number,
       default: 0, //fetched data
-      select: false,
     },
     ratingsTotal: {
       type: Number,
@@ -93,12 +95,10 @@ const bookSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    formats: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Format',
-      },
-    ],
+    format: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Format',
+    },
     author: {
       type: mongoose.Schema.ObjectId,
       ref: 'Author',
@@ -119,6 +119,9 @@ const bookSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+bookSchema.index({ slug: 1, ratingsAvg: -1 });
+bookSchema.index({ ratingsTotal: -1, ratingsAvg: -1 });
 
 // Virtual populate - parent to child reference
 bookSchema.virtual('reviews', {
@@ -144,10 +147,10 @@ bookSchema.pre(/^findOne/, function (next) {
   next();
 });
 
-bookSchema.pre(/^findOne/, function (next) {
+bookSchema.pre(/^find/, function (next) {
   this.populate({
-    path: 'formats',
-    select: 'type pages',
+    path: 'format',
+    select: 'audiobook',
   });
   next();
 });
