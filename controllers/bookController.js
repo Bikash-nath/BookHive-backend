@@ -33,10 +33,7 @@ exports.deleteBook = factory.deleteOne(Book);
 
 exports.searchBooks = catchAsync(async (req, res, next) => {
   const keyword = req.query.keyword;
-  // const books = await Book.find({ title: `/${keyword}/` });
   const books = await Book.find({ title: { $regex: `.*${keyword}.*` } });
-  console.log(books.length);
-
   res.status(200).json({
     status: 'success',
     results: books.length,
@@ -51,12 +48,11 @@ exports.getSimilarBooks = catchAsync(async (req, res, next) => {
   book.genres.forEach(async (genreId) => {
     const genre = await Genre.findById(genreId);
     // genreBooksList.forEach((book) => genreBooksList.push(book));
-    console.log('genre:->', genre.books);
+    // console.log('genre:->', genre.books);
     genreBooksList = genre.books;
     // genreBooksList = [...genreBooksList, ...genre.books];
   });
-  console.log('\n\n---->\n');
-  console.log(genreBooksList);
+  // console.log(genreBooksList);
   const similarBooks = [];
 
   genreBooksList.forEach((genreBook) => {
@@ -65,8 +61,8 @@ exports.getSimilarBooks = catchAsync(async (req, res, next) => {
     }
   });
 
-  console.log('\n\n---->\n');
-  console.log(similarBooks, '\n');
+  // console.log('\n\n---->\n');
+  // console.log(similarBooks, '\n');
 
   res.status(200).json({
     status: 'success',
