@@ -4,7 +4,7 @@ const factory = require('./handlerFactory');
 const catchAsync = require('../utils/catchAsync');
 
 exports.aliasTopGenres = (req, res, next) => {
-  req.query.limit = 30;
+  req.query.limit = 24;
   req.query.sort = '-books';
   req.query.fields = 'title slug';
   next();

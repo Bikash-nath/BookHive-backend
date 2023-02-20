@@ -49,6 +49,7 @@ const userProfileSchema = new mongoose.Schema({
     type: String,
     enum: ['user', 'author', 'creator', 'admin'],
     default: 'user',
+    select: false,
   },
   password: {
     type: String,

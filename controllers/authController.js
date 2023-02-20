@@ -23,13 +23,13 @@ const createSendToken = (user, statusCode, res) => {
   res.cookie('jwt', token, cookieOptions);
 
   user.password = undefined; // Remove password field from created User
+  user._id = undefined;
+  user.__v = undefined;
 
   res.status(statusCode).json({
     status: 'success',
     token,
-    data: {
-      user,
-    },
+    data: user,
   });
 };
 
@@ -38,15 +38,18 @@ exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
-    phoneNo: req.body.phoneNo,
-    gender: req.body.gender,
-    dob: req.body.dob,
-    photo: req.body.photo,
-    occupation: req.body.occupation,
-    address: req.body.address,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
   });
+  // phoneNo: req.body.phoneNo,
+  // gender: req.body.gender,
+  // dob: req.body.dob,
+  // photo: req.body.photo,
+  // occupation: req.body.occupation,
+  // address: req.body.address,
+
+  newUser.role = undefined;
+  newUser.deleted = undefined;
 
   createSendToken(newUser, 201, res);
 });

@@ -47,10 +47,12 @@ const authorSchema = new mongoose.Schema(
       default: 0,
       min: 0,
       max: 5,
+      select: false,
     },
     ratingsCount: {
       type: Number,
       default: 0,
+      select: false,
     },
     followersCount: {
       type: Number,
@@ -82,6 +84,12 @@ const authorSchema = new mongoose.Schema(
         ref: 'Genre',
       },
     ],
+    books: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Book',
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },
@@ -98,10 +106,20 @@ authorSchema.virtual('reviews', {
   localField: '_id',
 });
 
-authorSchema.virtual('books', {
-  ref: 'Book',
-  foreignField: 'author', //in Book modal
-  localField: '_id',
+authorSchema.pre('findOne', function (next) {
+  this.populate({
+    path: 'genres',
+    select: 'name title slug',
+  });
+  next();
+});
+
+authorSchema.pre('findOne', function (next) {
+  this.populate({
+    path: 'books',
+    select: 'title image author slug',
+  });
+  next();
 });
 
 const Author = mongoose.model('Author', authorSchema);

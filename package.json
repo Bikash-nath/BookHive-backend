@@ -8,7 +8,7 @@
     "dev": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": "node --inspect server.js",
-    "load": "nodemon loader/loadData.js",
+    "load": "node loader/loadData.js",
     "update-authors": "nodemon loader/updateAuthors.js",
     "update-books": "nodemon loader/updateBooks.js"
   },

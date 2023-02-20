@@ -4,14 +4,14 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
 exports.aliasTopAuthors = (req, res, next) => {
-  req.query.limit = 30;
+  req.query.limit = 20;
   req.query.sort = '-totalFollowers,-ratingsAvg';
-  req.query.fields = 'name image author slug,id,-id';
+  req.query.fields = 'name,image,author,slug';
   next();
 };
 
-exports.getAllAuthors = factory.getAll(Author, 'name image author slug');
-exports.getAuthor = factory.getOne(Author, { path: 'reviews' }); //remove imageSm, _id
+exports.getAllAuthors = factory.getAll(Author);
+exports.getAuthor = factory.getOne(Author, { path: 'books', path: 'reviews' });
 // exports.createAuthor = factory.createOne(Author);
 // exports.updateAuthor = factory.updateOne(Author);
 // exports.deleteAuthor = factory.deleteOne(Author);
