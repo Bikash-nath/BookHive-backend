@@ -61,7 +61,6 @@ const authorSchema = new mongoose.Schema(
     ratingsAvg: {
       type: Number,
       default: 0, //fetched data
-      select: false,
     },
     totalFollowers: {
       type: Number,

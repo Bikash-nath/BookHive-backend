@@ -5,21 +5,21 @@ const catchAsync = require('../utils/catchAsync');
 const Genre = require('../models/genreModel');
 
 exports.aliasBestsellers = (req, res, next) => {
-  req.query.limit = 20;
+  req.query.limit = 15;
   req.query.sort = '-ratingsTotal,-ratingsAvg';
   req.query.fields = 'title,image,author,slug';
   next();
 };
 
 exports.aliasAudiobooks = (req, res, next) => {
-  req.query.limit = 20;
+  req.query.limit = 15;
   req.query.sort = '-ratingsAvg,-ratingsTotal';
   req.query.fields = 'title,image,author,slug';
   next();
 };
 
 exports.aliasLatestBooks = (req, res, next) => {
-  req.query.limit = 20;
+  req.query.limit = 15;
   req.query.sort = '-ratingsAvg,-createdAt';
   req.query.fields = 'title image author slug';
   next();

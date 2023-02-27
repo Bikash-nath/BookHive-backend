@@ -9,8 +9,8 @@
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": "node --inspect server.js",
     "load": "node loader/loadData.js",
-    "update-authors": "nodemon loader/updateAuthors.js",
-    "update-books": "nodemon loader/updateBooks.js"
+    "update": "nodemon loader/updateBooks.js",
+    "update-authors": "nodemon loader/updateAuthors.js"
   },
   "author": "Bikash",
   "license": "ISC",

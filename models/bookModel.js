@@ -94,6 +94,7 @@ const bookSchema = new mongoose.Schema(
     verified: {
       type: Boolean,
       default: false,
+      select: false,
     },
     format: {
       type: mongoose.Schema.ObjectId,
@@ -150,7 +151,7 @@ bookSchema.pre(/^findOne/, function (next) {
 bookSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'format',
-    select: 'audiobook',
+    select: 'ebook audiobook',
   });
   next();
 });
