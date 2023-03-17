@@ -5,21 +5,21 @@ const catchAsync = require('../utils/catchAsync');
 const Genre = require('../models/genreModel');
 
 exports.aliasBestsellers = (req, res, next) => {
-  req.query.limit = 15;
+  if (!req.query.limit) req.query.limit = 30;
   req.query.sort = '-ratingsTotal,-ratingsAvg';
   req.query.fields = 'title,image,author,slug';
   next();
 };
 
 exports.aliasAudiobooks = (req, res, next) => {
-  req.query.limit = 15;
+  if (!req.query.limit) req.query.limit = 30;
   req.query.sort = '-ratingsAvg,-ratingsTotal';
   req.query.fields = 'title,image,author,slug';
   next();
 };
 
 exports.aliasLatestBooks = (req, res, next) => {
-  req.query.limit = 15;
+  if (!req.query.limit) req.query.limit = 30;
   req.query.sort = '-ratingsAvg,-createdAt';
   req.query.fields = 'title image author slug';
   next();
@@ -34,6 +34,7 @@ exports.deleteBook = factory.deleteOne(Book);
 exports.searchBooks = catchAsync(async (req, res, next) => {
   const keyword = req.query.keyword;
   const books = await Book.find({ title: { $regex: `.*${keyword}.*` } });
+
   res.status(200).json({
     status: 'success',
     results: books.length,
@@ -64,7 +65,7 @@ exports.getSimilarBooks = catchAsync(async (req, res, next) => {
   // console.log('\n\n---->\n');
   // console.log(similarBooks, '\n');
 
-  res.status(200).json({
+  res.status(300).json({
     status: 'success',
     results: similarBooks.length,
     data: {
@@ -78,7 +79,7 @@ exports.getTopBooks = catchAsync(async (req, res, next) => {
   // const features = new APIFeatures(Book.find(), { ...req.query, ...req.docFilter }).filter().sort().limitFields();
   const books = await Book.find().sort('bestsellerRank');
 
-  res.status(200).json({
+  res.status(300).json({
     status: 'success',
     results: books.length,
     data: {

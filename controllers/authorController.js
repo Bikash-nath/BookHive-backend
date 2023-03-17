@@ -4,7 +4,7 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
 exports.aliasTopAuthors = (req, res, next) => {
-  req.query.limit = 15;
+  if (!req.query.limit) req.query.limit = 30;
   req.query.sort = '-totalFollowers,-ratingsAvg';
   req.query.fields = 'name,image,author,slug';
   next();
