@@ -5,29 +5,10 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const filterObj = require('../utils/filterObject');
 
-exports.setUserId = (req, res, next) => {
-  req.params.id = req.user.id;
-  next();
-};
-
-exports.getUserAddress = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
-  if (!user.address) {
-    return next(new AppError('No address found', 404));
-  }
-  req.params.id = user.address._id;
-  next();
-});
-
-exports.saveUserAddress = catchAsync(async (req, res, next) => {
-  const address = req.body.address;
-  const house = await User.findByIdAndUpdate(req.user.id, { address: address._id });
-
-  res.status(201).json({
-    status: 'success',
-    data: { address },
-  });
-});
+// exports.setUserId = (req, res, next) => {
+//   req.params.id = req.user.id;
+//   next();
+// };
 
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -83,8 +64,8 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     return next(new AppError('Please use Password Update page / Forgot Password to update your password.', 400));
   }
 
-  // 2) Filtered out unwanted fields names that are not allowed to be updated
-  const filteredBody = filterObj(req.body, 'id', 'email', 'role');
+  // 2) Filter out unwanted fields that are not allowed to be updated
+  const filteredBody = filterObj(req.body, 'id', 'email', 'phoneNo', 'password', 'role');
   if (req.file) filteredBody.photo = req.file.filename;
 
   // 3) Update user document
@@ -107,16 +88,5 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   res.status(204).json({
     status: 'success',
     data: null,
-  });
-});
-
-exports.addUserAddress = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
-  const address = req.body.address;
-  user.address = address._id;
-  user.save();
-  res.status(201).json({
-    status: 'success',
-    data: { address },
   });
 });

@@ -1,8 +1,9 @@
 const Book = require('../models/bookModel');
-const factory = require('./handlerFactory');
-// const AppError = require('../utils/appError');
-const catchAsync = require('../utils/catchAsync');
 const Genre = require('../models/genreModel');
+const APIFeatures = require('../utils/apiFeatures');
+const factory = require('./handlerFactory');
+const catchAsync = require('../utils/catchAsync');
+// const AppError = require('../utils/appError');
 
 exports.aliasBestsellers = (req, res, next) => {
   if (!req.query.limit) req.query.limit = 30;
@@ -33,7 +34,11 @@ exports.deleteBook = factory.deleteOne(Book);
 
 exports.searchBooks = catchAsync(async (req, res, next) => {
   const keyword = req.query.keyword;
-  const books = await Book.find({ title: { $regex: `.*${keyword}.*` } });
+  const features = new APIFeatures(Book.find({ title: { $regex: `.*${keyword}.*` } }), { ...req.query })
+    .filter()
+    .sort()
+    .paginate();
+  const books = await features.query;
 
   res.status(200).json({
     status: 'success',

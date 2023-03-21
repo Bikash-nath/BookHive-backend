@@ -12,8 +12,8 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
-const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
-// const DB = process.env.DATABASE_LOCAL;
+// const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
+const DB = process.env.DATABASE_LOCAL;
 
 const connectDB = async () => {
   try {
@@ -25,17 +25,18 @@ const connectDB = async () => {
 };
 
 const port = process.env.PORT || 3000;
+var server;
 
-connectDB().then(() =>
-  app.listen(port, () => {
-    console.log(`App running on port ${port}...`);
-  })
+connectDB().then(
+  () =>
+    (server = app.listen(port, () => {
+      console.log(`App running on port ${port}...`);
+    }))
 );
 
 process.on('unhandledRejection', (err) => {
   console.log('UNHANDLED REJECTION! 💥 Shutting down...');
-  console.log('NODE_ENV:', process.env.NODE_ENV, '\nPORT:', process.env.PORT, '\nDATABASE:', DB);
-  console.log(err.name, err.message, err.stack);
-  // server.close(() => {
-  process.exit(1);
+  server.close(() => {
+    process.exit(1);
+  });
 });

@@ -58,8 +58,10 @@ exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
   // 1) Check if email and password exist
-  if (!email || !password) {
-    return next(new AppError('Please provide email and password!', 400));
+  if (!email) {
+    return next(new AppError('Please provide your email!', 400));
+  } else if (!password) {
+    return next(new AppError('Please provide your password!', 400));
   }
   // 2) Check if user exists && password is correct
   const user = await User.findOne({ email }).select('+password');
@@ -81,6 +83,7 @@ exports.logout = (req, res) => {
 };
 
 exports.protect = catchAsync(async (req, res, next) => {
+  console.log('req.cookies', req.cookies);
   // 1) Getting token from headers
   let token;
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
