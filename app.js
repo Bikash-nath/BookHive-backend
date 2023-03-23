@@ -3,16 +3,17 @@ const morgan = require('morgan');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
 // const helmet = require('helmet');
+const cors = require('cors');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const bookRouter = require('./routes/bookRoutes');
 const authorRouter = require('./routes/authorRoutes');
 const genreRouter = require('./routes/genreRoutes');
-const formatRouter = require('./routes/formatRoutes');
 const userProfileRouter = require('./routes/userProfileRoutes');
+const userLibraryRouter = require('./routes/userLibraryRoutes');
+const formatRouter = require('./routes/formatRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
-const cors = require('cors');
 
 const app = express();
 
@@ -24,10 +25,13 @@ if (process.env.NODE_ENV === 'development') {
 //Set security HTTP headers
 // app.use(helmet());
 
+app.use(cookieParser());
+
 //Implement CORS
+// origin: ['https://bookhive.vercel.app', 'http://localhost:3000'],
 const corsOptions = {
-  origin: ['https://bookhive.vercel.app', 'http://localhost:3000'],
   credentials: true, //access-control-allow-credentials:true
+  origin: true,
   allowedHeaders: [
     'Content-Type',
     'Origin',
@@ -45,8 +49,6 @@ app.options('*', cors());
 
 //Body parser
 app.use(express.json({ limit: '10kb' }));
-
-app.use(cookieParser());
 app.use(compression());
 
 app.use((req, res, next) => {
@@ -60,6 +62,7 @@ app.use('/api/authors', authorRouter);
 app.use('/api/genres', genreRouter);
 app.use('/api/reviews', reviewRouter);
 app.use('/api/users/profile', userProfileRouter);
+app.use('/api/users/library', userLibraryRouter);
 
 app.use(express.static('public'));
 

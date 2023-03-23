@@ -35,14 +35,13 @@ const userProfileSchema = new mongoose.Schema({
     },
   },
   address: {
-    state: {
-      type: String,
-      maxlength: 20,
-    },
-    country: {
-      type: String,
-      default: 'India',
-    },
+    // state: {
+    //   type: String,
+    //   maxlength: 20,
+    // },
+    // country: {
+    type: String,
+    default: 'India',
   },
   occupation: String,
   role: {

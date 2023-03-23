@@ -54,18 +54,30 @@ exports.getUser = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getMe = () => {
-  return factory.getOne(User);
-};
+exports.getMe = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  console.log('userLibrary.books', user);
+
+  if (!user) {
+    return next(new AppError('No user found. Login again to get access.', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user,
+    },
+  });
+});
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   // 1) Create error if user POSTs password data
   if (req.body.password || req.body.passwordConfirm) {
     return next(new AppError('Please use Password Update page / Forgot Password to update your password.', 400));
   }
-
+  console.log(req.body);
   // 2) Filter out unwanted fields that are not allowed to be updated
-  const filteredBody = filterObj(req.body, 'id', 'email', 'phoneNo', 'password', 'role');
+  const filteredBody = filterObj(req.body, '_id', 'email', 'phoneNo', 'password', 'role');
   if (req.file) filteredBody.photo = req.file.filename;
 
   // 3) Update user document
@@ -76,9 +88,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    data: {
-      user: updatedUser,
-    },
+    data: updatedUser,
   });
 });
 

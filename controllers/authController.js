@@ -17,32 +17,23 @@ const createSendToken = (user, statusCode, res) => {
   const cookieOptions = {
     expire: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
     httpOnly: true, //can't be accessed or modified by browser
+    secure: true,
+    sameSite: 'none',
   };
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true; //send cookie only on HTTPS conn.
 
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  // res.Set("Set-Cookie",`jwt=${token}`)
 
-  // res
-  //   .cookie('jwt', 'express', {
-  //     httpOnly: false,
-  //     secure: false,
-  //     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-  //   })
-  //   .status(statusCode)
-  //   .send({
-  //     status: 'success',
-  //     data: user,
-  //   });
-
+  res.cookie('jwt', token, cookieOptions);
   user.password = undefined; // Remove password field from created User
   user._id = undefined;
   user.__v = undefined;
 
   res.status(statusCode).json({
     status: 'success',
-    token,
     data: user,
   });
 };
@@ -70,6 +61,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
+  console.log('req.headers', req.headers);
 
   // 1) Check if email and password exist
   if (!email) {
@@ -97,13 +89,13 @@ exports.logout = (req, res) => {
 };
 
 exports.protect = catchAsync(async (req, res, next) => {
-  console.log('req.cookies', req.cookie);
+  console.log('req.cookies', req.cookies.jwt);
   // 1) Getting token from headers
   let token;
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    token = req.headers.authorization.split(' ')[1];
-  } else if (req.cookies.jwt) {
+  if (req.cookies.jwt) {
     token = req.cookies.jwt;
+  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
   }
 
   if (!token) {
@@ -187,11 +179,12 @@ exports.updateEmail = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user.id);
 
   // 2) Update email
-  user.email = req.body.email;
-  await user.save();
+  // user.email = req.body.email;
+  console.log(user);
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, { email: req.body.newEmail });
 
   // 3) Send JWT to client
-  createSendToken(user, 200, res);
+  createSendToken(updatedUser, 200, res);
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -204,8 +197,8 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   }
 
   // 3) Update password
-  user.password = req.body.password;
-  user.passwordConfirm = req.body.passwordConfirm;
+  user.password = req.body.newPassword;
+  user.passwordConfirm = req.body.newPasswordConfirm;
   await user.save();
 
   // 4) Send JWT to client
