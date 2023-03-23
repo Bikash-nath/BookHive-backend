@@ -2,7 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
-const helmet = require('helmet');
+// const helmet = require('helmet');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -22,10 +22,25 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 //Set security HTTP headers
-app.use(helmet());
+// app.use(helmet());
 
 //Implement CORS
-app.use(cors());
+const corsOptions = {
+  origin: ['https://bookhive.vercel.app', 'http://localhost:3000'],
+  credentials: true, //access-control-allow-credentials:true
+  allowedHeaders: [
+    'Content-Type',
+    'Origin',
+    'X-Requested-With',
+    'Accept',
+    'x-client-key',
+    'x-client-token',
+    'x-client-secret',
+    'Authorization',
+  ],
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 app.options('*', cors());
 
 //Body parser

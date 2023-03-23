@@ -20,7 +20,21 @@ const createSendToken = (user, statusCode, res) => {
   };
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true; //send cookie only on HTTPS conn.
 
-  res.cookie('jwt', token, cookieOptions);
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+
+  // res
+  //   .cookie('jwt', 'express', {
+  //     httpOnly: false,
+  //     secure: false,
+  //     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+  //   })
+  //   .status(statusCode)
+  //   .send({
+  //     status: 'success',
+  //     data: user,
+  //   });
 
   user.password = undefined; // Remove password field from created User
   user._id = undefined;
@@ -83,7 +97,7 @@ exports.logout = (req, res) => {
 };
 
 exports.protect = catchAsync(async (req, res, next) => {
-  console.log('req.cookies', req.cookies);
+  console.log('req.cookies', req.cookie);
   // 1) Getting token from headers
   let token;
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -166,6 +180,18 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
     return next(new AppError('There was an error sending the email. Try again later!'), 500);
   }
+});
+
+exports.updateEmail = catchAsync(async (req, res, next) => {
+  // 1) Get user from collection
+  const user = await User.findById(req.user.id);
+
+  // 2) Update email
+  user.email = req.body.email;
+  await user.save();
+
+  // 3) Send JWT to client
+  createSendToken(user, 200, res);
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
