@@ -10,6 +10,11 @@ const userLibrarySchema = new mongoose.Schema({
     {
       type: mongoose.Schema.ObjectId,
       ref: 'Book',
+      // createdAt: {
+      //   type: Date,
+      //   default: Date.now,
+      //   select: false,
+      // },
     },
   ],
   authors: [

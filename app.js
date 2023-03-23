@@ -28,10 +28,10 @@ if (process.env.NODE_ENV === 'development') {
 app.use(cookieParser());
 
 //Implement CORS
-// origin: ['https://bookhive.vercel.app', 'http://localhost:3000'],
+// origin: true,
 const corsOptions = {
   credentials: true, //access-control-allow-credentials:true
-  origin: true,
+  origin: ['https://bookhive.vercel.app', 'http://localhost:3000'],
   allowedHeaders: [
     'Content-Type',
     'Origin',

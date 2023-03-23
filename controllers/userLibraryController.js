@@ -57,12 +57,12 @@ exports.getUserLibrary = catchAsync(async (req, res, next) => {
 });
 
 exports.getLibraryBooks = catchAsync(async (req, res, next) => {
-  let query = UserLibrary.findOne({ user: req.user.id });
-  query = query.populate({
-    path: 'books',
-    select: 'title image author slug',
-  });
-  const library = await query;
+  const library = await UserLibrary.findOne({ user: req.user.id });
+  // .sort({ books: -1 });
+  // options: {
+  //   sortArray: {books: -1},
+  // },
+
   if (!library.books) {
     return next(new AppError(`No books found in user library`, 404));
   }
@@ -74,12 +74,8 @@ exports.getLibraryBooks = catchAsync(async (req, res, next) => {
 });
 
 exports.getLibraryAuthors = catchAsync(async (req, res, next) => {
-  let query = UserLibrary.findOne({ user: req.user.id });
-  query = query.populate({
-    path: 'authors',
-    select: 'name image author slug',
-  });
-  const library = await query;
+  const library = await UserLibrary.findOne({ user: req.user.id });
+
   if (!library.authors) {
     return next(new AppError(`No authors found in user library`, 404));
   }
@@ -91,12 +87,8 @@ exports.getLibraryAuthors = catchAsync(async (req, res, next) => {
 });
 
 exports.getLibraryGenres = catchAsync(async (req, res, next) => {
-  let query = UserLibrary.findOne({ user: req.user.id });
-  query = query.populate({
-    path: 'genres',
-    select: 'title slug',
-  });
-  const library = await query;
+  const library = await UserLibrary.findOne({ user: req.user.id });
+
   if (!library.genres) {
     return next(new AppError(`No genres found in user library`, 404));
   }
