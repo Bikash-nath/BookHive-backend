@@ -3,19 +3,18 @@ const factory = require('./handlerFactory');
 // const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
-exports.aliasTopGenres = (req, res, next) => {
-  req.query.limit = 30;
-  req.query.sort = '-books';
-  req.query.fields = 'title slug';
-  next();
-};
+exports.getAllGenres = catchAsync(async (req, res, next) => {
+  let query = Genre.find().select('title slug').sort('-books').limit(30);
+  const genres = await query;
+  if (!genres) {
+    return next(new AppError(`No document found with that ID`, 404));
+  }
 
-exports.aliasGenreBooks = (req, res, next) => {
-  req.query.sort = '-books';
-  next();
-};
-
-exports.getAllGenres = factory.getAll(Genre); //{_id:0} - fields without _id
+  res.status(200).json({
+    status: 'success',
+    data: genres,
+  });
+});
 
 exports.getGenreBooks = catchAsync(async (req, res, next) => {
   let query = Genre.findOne({ slug: req.params.slug, ...req.docFilter });

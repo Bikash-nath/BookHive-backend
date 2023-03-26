@@ -56,7 +56,6 @@ exports.getUser = catchAsync(async (req, res, next) => {
 
 exports.getMe = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user.id);
-  console.log('userLibrary.books', user);
 
   if (!user) {
     return next(new AppError('No user found. Login again to get access.', 404));
@@ -75,7 +74,6 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm) {
     return next(new AppError('Please use Password Update page / Forgot Password to update your password.', 400));
   }
-  console.log(req.body);
   // 2) Filter out unwanted fields that are not allowed to be updated
   const filteredBody = filterObj(req.body, '_id', 'email', 'phoneNo', 'password', 'role');
   if (req.file) filteredBody.photo = req.file.filename;

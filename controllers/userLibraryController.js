@@ -35,7 +35,7 @@ exports.getUserLibrary = catchAsync(async (req, res, next) => {
       path: 'authors',
       select: 'name image author slug',
       options: {
-        limit: 10,
+        limit: 12,
       },
     })
     .populate({

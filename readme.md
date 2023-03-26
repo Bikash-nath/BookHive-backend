@@ -1,9 +1,12 @@
 # BookHive-Backend
 
-**_BookHive is an online platform for accessing millions of free audiobooks, ePubs, PDFs, magazines and podcasts.<br>
-Our Aim is to help people explore, discuss and share books they love and improve process of learning and reading via the efforts of a fantastic community of readers._**
+**_Bookhive is an evolving reading library with thousands of free audiobooks, eBooks and magazines.
+<br />
+Now a comprehensive, seamless and personalized reading experience is at your fingertips, making reading more accessible than ever.
+<br />
+Our Aim is to help people explore, discuss and share books they love and improve the process of learning and reading via the efforts of a fantastic community of readers._**
 
-### ![API](https://user-images.githubusercontent.com/5663078/161288344-33fa8e03-92ee-46ff-b490-38bf4dd8f379.png#gh-dark-mode-only) Visit API: [bookhive.cyclic.app](https://bookhive.cyclic.app:3000/api/)
+### ![API](https://user-images.githubusercontent.com/5663078/161288344-33fa8e03-92ee-46ff-b490-38bf4dd8f379.png#gh-dark-mode-only) Visit API: [bookhive.up.railway.app](https://bookhive.up.railway.app/api/)
 
 <br>
 

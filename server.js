@@ -35,7 +35,7 @@ connectDB().then(
 );
 
 process.on('unhandledRejection', (err) => {
-  console.log('UNHANDLED REJECTION! 💥 Shutting down...');
+  console.log('UNHANDLED REJECTION! 💥 Shutting down...\n', err);
   server.close(() => {
     process.exit(1);
   });

@@ -34,7 +34,7 @@ exports.deleteBook = factory.deleteOne(Book);
 
 exports.searchBooks = catchAsync(async (req, res, next) => {
   const keyword = req.query.keyword;
-  const features = new APIFeatures(Book.find({ title: { $regex: `.*${keyword}.*` } }), { ...req.query })
+  const features = new APIFeatures(Book.find({ title: { $regex: `.*${keyword}.*`, $options: 'i' } }), { ...req.query })
     .filter()
     .sort()
     .paginate();

@@ -17,14 +17,13 @@ const createSendToken = (user, statusCode, res) => {
   const cookieOptions = {
     expire: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
     httpOnly: true, //can't be accessed or modified by browser
-    secure: true,
+    secure: true, //send cookie only on HTTPS conn.
     sameSite: 'none',
   };
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true; //send cookie only on HTTPS conn.
+  // if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  // res.setHeader('Access-Control-Allow-Origin', '*');
   // res.Set("Set-Cookie",`jwt=${token}`)
 
   res.cookie('jwt', token, cookieOptions);
