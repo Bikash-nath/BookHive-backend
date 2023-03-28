@@ -27,7 +27,7 @@ const createSendToken = (user, statusCode, res) => {
   // res.Set("Set-Cookie",`jwt=${token}`)
 
   res.cookie('jwt', token, cookieOptions);
-  console.log('jwt-token', token);
+
   user.password = undefined; // Remove password field from created User
   user._id = undefined;
   user.__v = undefined;
@@ -40,7 +40,10 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-  // const user =Object.keys(req.body).filter(field=>field!=='role');
+  const user = Object.keys(req.body).filter((field) => field !== 'role');
+  if (req.body.email === req.body.password) {
+    return next(new AppError('Please provide different strong password!', 400));
+  }
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
@@ -178,9 +181,11 @@ exports.updateEmail = catchAsync(async (req, res, next) => {
   // 1) Get user from collection
   const user = await User.findById(req.user.id);
 
-  // 2) Update email
-  // user.email = req.body.email;
-  console.log(user);
+  // 2) Verify email
+  if (user.email !== req.body.email) {
+    return next(new AppError('Your current email is incorrect.', 401));
+  }
+
   const updatedUser = await User.findByIdAndUpdate(req.user.id, { email: req.body.newEmail });
 
   // 3) Send JWT to client
