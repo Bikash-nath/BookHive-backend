@@ -5,16 +5,12 @@ const reviewSchema = new mongoose.Schema(
     title: {
       type: String,
       required: [true, 'Review title can not be empty!'],
+      maxlength: [50, 'Description must have atleast 50 characters'],
     },
     description: {
-      liked: {
-        type: String,
-        minlength: [20, 'Possitive description must have atleast 20 characters'],
-      },
-      disliked: {
-        type: String,
-        minlength: [20, 'Negative description must have atleast 5 characters'],
-      },
+      type: String,
+      minlength: [50, 'Description must have atleast 50 characters'],
+      maxlength: [500, 'Description must have atmost 400 characters'],
     },
     rating: {
       type: Number,
@@ -41,7 +37,7 @@ const reviewSchema = new mongoose.Schema(
     },
     user: {
       type: mongoose.Schema.ObjectId,
-      ref: 'User',
+      ref: 'UserProfile',
       required: [true, 'Review must belong to a user'],
     },
   },

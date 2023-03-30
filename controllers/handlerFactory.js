@@ -39,7 +39,7 @@ exports.getAll = (Model) =>
 exports.createOne = (Model) =>
   catchAsync(async (req, res, next) => {
     // const filteredDoc = filterObj(req.body, Object.keys(req.docFilter)[0]);
-    const doc = await Model.create({ ...req.body, ...req.docFilter }).limitFields();
+    const doc = await Model.create({ ...req.body, ...req.docFilter });
     res.status(201).json({
       status: 'success',
       data: doc,

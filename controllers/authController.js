@@ -35,7 +35,7 @@ const createSendToken = (user, statusCode, res) => {
   res.status(statusCode).json({
     status: 'success',
     data: user,
-    // jwt: token,
+    jwt: token,
   });
 };
 
@@ -109,7 +109,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   // 3) Check if user still exists
-  const currentUser = await User.findById(decoded.id);
+  const currentUser = await User.findById(decoded.id).select('+role');
 
   if (!currentUser) {
     return next(new AppError('The user belonging to this token does no longer exist.', 401));
@@ -128,6 +128,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 exports.restrictTo = (...roles) =>
   catchAsync(async (req, res, next) => {
     const userRole = req.user.role;
+    console.log(userRole, roles, req.user);
     if (roles.includes('admin') && userRole === 'admin') {
       next(); //need to pass admin doc filter
     } else if (req.method === 'POST' && userRole === roles[0]) {

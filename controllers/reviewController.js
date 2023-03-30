@@ -5,6 +5,8 @@ const catchAsync = require('../utils/catchAsync');
 exports.filterReviews = catchAsync(async (req, res, next) => {
   if (req.params.bookId) {
     req.docFilter = { book: req.params.bookId };
+  } else if (req.params.authorId) {
+    req.docFilter = { author: req.params.authorId };
   } else {
     req.docFilter = { user: req.user.id };
   }

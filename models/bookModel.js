@@ -96,6 +96,10 @@ const bookSchema = new mongoose.Schema(
       default: false,
       select: false,
     },
+    free: {
+      type: Boolean,
+      default: false,
+    },
     format: {
       type: mongoose.Schema.ObjectId,
       ref: 'Format',
