@@ -32,6 +32,28 @@ exports.createBook = factory.createOne(Book);
 exports.updateBook = factory.updateOne(Book);
 exports.deleteBook = factory.deleteOne(Book);
 
+exports.getIndianBooks = catchAsync(async (req, res) => {
+  let books;
+  console.log(req.query);
+  if (req.query.language == 'indian') books = await Book.find({ free: true }).sort('-ratingsAvg');
+  else if (req.query.language == 'bangla') books = await Book.find({ language: 'Bangla' }).sort('-ratingsAvg');
+  else books = await Book.find({ language: 'Punjabi' }).sort('-ratingsAvg');
+
+  res.status(200).json({
+    status: 'success',
+    data: books,
+  });
+});
+
+// exports.getRegionalBooks = catchAsync(async (req, res) => {
+//   const books = await Book.find({ language: language }).sort('-ratingsAvg');
+
+//   res.status(200).json({
+//     status: 'success',
+//     data: books,
+//   });
+// });
+
 exports.searchBooks = catchAsync(async (req, res, next) => {
   const keyword = req.query.keyword;
   const features = new APIFeatures(Book.find({ title: { $regex: `.*${keyword}.*`, $options: 'i' } }), { ...req.query })

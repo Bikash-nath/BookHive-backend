@@ -3,7 +3,7 @@ const factory = require('./handlerFactory');
 // const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
-exports.getAllGenres = catchAsync(async (req, res, next) => {
+exports.getTopGenres = catchAsync(async (req, res, next) => {
   let query = Genre.find().select('title slug').sort('-books').limit(30);
   const genres = await query;
   if (!genres) {
@@ -37,20 +37,3 @@ exports.getGenreBooks = catchAsync(async (req, res, next) => {
     data: doc,
   });
 });
-
-/*
-exports.getTopGenres = catchAsync(async (req, res, next) => {
-  // sort based on genre-books.length
-
-  res.status(200).json({
-    status: 'success',
-    results: genres.length,
-    data: {
-      data: genres,
-    },
-  });
-});*/
-
-// exports.createGenre = factory.createOne(Genre);
-// exports.updateGenre = factory.updateOne(Genre);
-// exports.deleteGenre = factory.deleteOne(Genre);

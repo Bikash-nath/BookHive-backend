@@ -7,7 +7,9 @@ const router = express.Router();
 router
   .get('/bestsellers', bookController.aliasBestsellers, bookController.getAllBooks)
   .get('/audiobooks', bookController.aliasAudiobooks, bookController.getAllBooks)
-  .get('/latest', bookController.aliasLatestBooks, bookController.getAllBooks);
+  .get('/latest', bookController.aliasLatestBooks, bookController.getAllBooks)
+  .get('/indian', bookController.getIndianBooks);
+// .get('/regional', bookController.getRegionalBooks);
 
 router.route('/search').get(bookController.aliasBestsellers, bookController.searchBooks);
 

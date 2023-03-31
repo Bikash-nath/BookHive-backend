@@ -4,8 +4,8 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-// router.route('/top').get(genreController.getTopGenres);
-router.route('/top').get(genreController.getAllGenres);
+router.route('/top').get(genreController.getTopGenres);
+// router.route('/all').get(genreController.getAllGenres);
 
 router.route('/:slug/books').get(genreController.getGenreBooks);
 
