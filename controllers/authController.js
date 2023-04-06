@@ -29,13 +29,13 @@ const createSendToken = (user, statusCode, res) => {
   res.cookie('jwt', token, cookieOptions);
 
   user.password = undefined; // Remove password field from created User
-  user._id = undefined;
   user.__v = undefined;
+  // user._id = undefined;
 
   res.status(statusCode).json({
     status: 'success',
     data: user,
-    jwt: token,
+    // jwt: token,
   });
 };
 

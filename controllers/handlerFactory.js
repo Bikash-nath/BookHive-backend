@@ -39,6 +39,7 @@ exports.getAll = (Model) =>
 exports.createOne = (Model) =>
   catchAsync(async (req, res, next) => {
     // const filteredDoc = filterObj(req.body, Object.keys(req.docFilter)[0]);
+    console.log('book-review', { ...req.body, ...req.docFilter });
     const doc = await Model.create({ ...req.body, ...req.docFilter });
     res.status(201).json({
       status: 'success',
