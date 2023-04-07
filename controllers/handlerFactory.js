@@ -49,7 +49,7 @@ exports.createOne = (Model) =>
 
 exports.updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    const doc = await Model.findOneAndUpdate({ slug: req.params.slug, ...req.docFilter }, req.body).limitFields();
+    const doc = await Model.findOneAndUpdate({ slug: req.params.slug, ...req.docFilter }, req.body);
     // const doc = await Model.findByIdAndUpdate(req.params.slug, req.body, {
     //   new: true,
     //   runValidators: true,   //doc.save()

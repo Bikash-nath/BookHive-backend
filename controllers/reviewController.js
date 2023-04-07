@@ -24,5 +24,18 @@ exports.setBookUserIds = (req, res, next) => {
 exports.getUserReviews = factory.getAll(Review);
 exports.getReview = factory.getOne(Review, { path: 'user' });
 exports.createReview = factory.createOne(Review);
-exports.updateReview = factory.updateOne(Review);
+
+exports.updateReview = catchAsync(async (req, res, next) => {
+  const doc = await Review.findByIdAndUpdate(req.params.id, req.body);
+
+  if (!doc) {
+    return next(new AppError(`No document found with that ID`, 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: doc,
+  });
+});
+
 exports.deleteReview = factory.deleteOne(Review);
