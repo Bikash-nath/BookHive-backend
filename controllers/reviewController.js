@@ -38,4 +38,21 @@ exports.updateReview = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.likeUserReview = catchAsync(async (req, res, next) => {
+  const review = await Review.findById(req.params.id);
+  if (!review) {
+    return next(new AppError(`No review found with that id`, 404));
+  }
+  const reviewIndex = review.likes.findIndex((userId) => userId.toString() == req.user.id);
+  if (reviewIndex === -1) review.likes = [...review.likes, req.user._id];
+  else review.likes = review.likes.filter((_, i) => i !== reviewIndex);
+
+  await review.save();
+
+  res.status(200).json({
+    status: 'success',
+    review,
+  });
+});
+
 exports.deleteReview = factory.deleteOne(Review);

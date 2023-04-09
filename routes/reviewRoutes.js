@@ -19,4 +19,7 @@ router
   .patch(reviewController.updateReview)
   .delete(reviewController.deleteReview);
 
+router.patch('/:id/like', authController.restrictTo('user'), reviewController.likeUserReview);
+// router.patch('/:id/dislike', authController.restrictTo('user'), reviewController.dislikeUserReview);
+
 module.exports = router;

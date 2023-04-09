@@ -5,7 +5,7 @@ const reviewSchema = new mongoose.Schema(
     title: {
       type: String,
       required: [true, 'Review title can not be empty!'],
-      maxlength: [50, 'Description must have atleast 50 characters'],
+      maxlength: [50, 'Title must have atmost 50 characters'],
     },
     description: {
       type: String,
@@ -27,6 +27,12 @@ const reviewSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    likes: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+      },
+    ],
     book: {
       type: mongoose.Schema.ObjectId,
       ref: 'Book',
