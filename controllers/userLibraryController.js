@@ -113,7 +113,7 @@ exports.favouriteBook = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    books: library.books,
+    book: bookIndex === -1 ? 'saved' : 'removed',
   });
 });
 
@@ -130,7 +130,7 @@ exports.followAuthor = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    authors: library.authors,
+    author: authorIndex === -1 ? 'followed' : 'unfollowed',
   });
 });
 
@@ -147,6 +147,6 @@ exports.favouriteGenre = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    genres: library.genres,
+    genre: genreIndex === -1 ? 'saved' : 'removed',
   });
 });

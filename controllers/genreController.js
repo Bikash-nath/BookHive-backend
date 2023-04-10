@@ -17,23 +17,34 @@ exports.getTopGenres = catchAsync(async (req, res, next) => {
 });
 
 exports.getGenreBooks = catchAsync(async (req, res, next) => {
+  console.log('req.params.slug\n', req.params.slug);
+  const genrePopulate = (query) => {
+    return query.populate({
+      path: 'books',
+      select: 'title image author slug',
+      options: {
+        limit: 30,
+        skip: (req.query.page - 1) * 30,
+        sort: '-ratingsAvg',
+      },
+    });
+  };
   let query = Genre.findOne({ slug: req.params.slug, ...req.docFilter });
-  query = query.populate({
-    path: 'books',
-    select: 'title image author slug',
-    options: {
-      limit: 30,
-      skip: (req.query.page - 1) * 30,
-      sort: '-ratingsAvg',
-    },
-  });
-  const doc = await query;
-  if (!doc) {
-    return next(new AppError(`No document found with that ID`, 404));
+  const genre = await genrePopulate(query);
+  if (!genre) {
+    return next(new AppError(`No genre found with that ID`, 404));
   }
+  //if(!genre.books) {
+  // const genres = req.params.slug.split('-');
+  // let query = Genre.find({
+  //   $or: [
+  //     { title: { $regex: `.*${genres[0]}.*` }, $options: 'i' },
+  //     { title: { $regex: `.*${genres[1]}.*` }, $options: 'i' },
+  //   ],
+  // });
 
   res.status(200).json({
     status: 'success',
-    data: doc,
+    data: genre,
   });
 });
