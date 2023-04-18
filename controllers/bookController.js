@@ -28,7 +28,16 @@ exports.aliasLatestBooks = (req, res, next) => {
 
 exports.getAllBooks = factory.getAll(Book); //{_id:0} - fields without _id
 exports.getBook = factory.getOne(Book, { path: 'reviews' });
-exports.createBook = factory.createOne(Book);
+
+exports.createBook = catchAsync(async (req, res, next) => {
+  // const filteredDoc = filterObj(req.body, Object.keys(req.docFilter)[0]);
+  console.log('book-review', { ...req.body, author: req.user.id, ...req.docFilter });
+  const book = await Book.create({ ...req.body, author: req.user.id, ...req.docFilter });
+  res.status(201).json({
+    status: 'success',
+    data: book,
+  });
+});
 exports.updateBook = factory.updateOne(Book);
 exports.deleteBook = factory.deleteOne(Book);
 
