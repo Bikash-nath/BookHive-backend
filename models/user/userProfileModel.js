@@ -8,6 +8,7 @@ const userProfileSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please tell us your name!'],
   },
+  slug: { type: String, trim: true, unique: true },
   email: {
     type: String,
     required: [true, 'Please provide your email'],
@@ -44,10 +45,25 @@ const userProfileSchema = new mongoose.Schema({
     default: 'India',
   },
   occupation: String,
+  website: {
+    type: String,
+  },
+  twitter: {
+    type: String,
+  },
   role: {
     type: String,
     enum: ['user', 'author', 'creator', 'admin'],
     default: 'user',
+    select: false,
+  },
+  followersCount: {
+    type: Number,
+    default: 0,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
     select: false,
   },
   password: {

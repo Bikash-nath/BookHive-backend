@@ -14,6 +14,7 @@ const userProfileRouter = require('./routes/userProfileRoutes');
 const userLibraryRouter = require('./routes/userLibraryRoutes');
 const formatRouter = require('./routes/formatRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const userUploadRouter = require('./routes/userUploadRoutes');
 
 const app = express();
 
@@ -63,6 +64,7 @@ app.use('/api/genres', genreRouter);
 app.use('/api/reviews', reviewRouter);
 app.use('/api/users/profile', userProfileRouter);
 app.use('/api/users/library', userLibraryRouter);
+app.use('/api/users/uploads', userUploadRouter);
 
 app.use(express.static('public'));
 

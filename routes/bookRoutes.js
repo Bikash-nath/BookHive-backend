@@ -11,17 +11,13 @@ router
   .get('/indian', bookController.getIndianBooks);
 // .get('/regional', bookController.getRegionalBooks);
 
-router
-  .route('/')
-  .post(authController.protect, authController.restrictTo('author', 'admin'), bookController.createBook)
-  .patch(authController.protect, authController.restrictTo('author', 'admin'), bookController.updateBook)
-  .delete(authController.protect, authController.restrictTo('author', 'admin'), bookController.deleteBook);
+router.route('/').post(authController.protect, authController.restrictTo('author', 'admin'), bookController.createBook);
+// .patch(authController.protect, authController.restrictTo('author', 'admin'), bookController.updateBook)
+// .delete(authController.protect, authController.restrictTo('author', 'admin'), bookController.deleteBook);
 
 router
   .get('/search', bookController.aliasBestsellers, bookController.searchBooks)
   .get('/searchSuggestion', bookController.searchSuggestion);
-
-// router.route('/userBooks').get(bookController.getUserBooks);
 
 router.route('/:slug').get(bookController.getBook);
 
