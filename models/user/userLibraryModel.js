@@ -1,62 +1,61 @@
-const mongoose = require('mongoose');
-// const validator = require('validator');
+const mongoose = require('mongoose')
 
 const userLibrarySchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'UserProfile',
-  },
-  books: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Book',
-      // createdAt: {
-      //   type: Date,
-      //   default: Date.now,
-      //   select: false,
-      // },
-    },
-  ],
-  authors: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Author',
-    },
-  ],
-  genres: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Genre',
-    },
-  ],
-});
+	user: {
+		type: mongoose.Schema.ObjectId,
+		ref: 'UserProfile',
+	},
+	books: [
+		{
+			type: mongoose.Schema.ObjectId,
+			ref: 'Book',
+			// createdAt: {
+			//   type: Date,
+			//   default: Date.now,
+			//   select: false,
+			// },
+		},
+	],
+	authors: [
+		{
+			type: mongoose.Schema.ObjectId,
+			ref: 'Author',
+		},
+	],
+	genres: [
+		{
+			type: mongoose.Schema.ObjectId,
+			ref: 'Genre',
+		},
+	],
+})
 
 userLibrarySchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'books',
-    select: 'title image author slug',
-  });
-  next();
-});
+	this.populate({
+		path: 'books',
+		select: 'title image author slug',
+	})
+	next()
+})
 
 userLibrarySchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'authors',
-    select: 'name image author slug',
-  });
-  next();
-});
+	this.populate({
+		path: 'authors',
+		select: 'name image author slug',
+	})
+	next()
+})
 
 userLibrarySchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'genres',
-    select: 'title slug',
-  });
-  next();
-});
+	this.populate({
+		path: 'genres',
+		select: 'title slug',
+	})
+	next()
+})
 
-const UserLibrary = mongoose.model('UserLibrary', userLibrarySchema);
-module.exports = UserLibrary;
+const UserLibrary = mongoose.model('UserLibrary', userLibrarySchema)
+module.exports = UserLibrary
 
 /*
   title: {
