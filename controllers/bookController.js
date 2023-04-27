@@ -1,4 +1,5 @@
 const Book = require('../models/bookModel');
+const Author = require('../models/authorModel');
 const Genre = require('../models/genreModel');
 const APIFeatures = require('../utils/apiFeatures');
 const factory = require('./handlerFactory');
@@ -7,7 +8,7 @@ const catchAsync = require('../utils/catchAsync');
 
 exports.aliasBestsellers = (req, res, next) => {
   if (!req.query.limit) req.query.limit = 30;
-  req.query.sort = '-ratingsTotal,-ratingsAvg';
+  if (!req.query.sort) req.query.sort = '-ratingsTotal,-ratingsAvg';
   req.query.fields = 'title,image,author,slug';
   next();
 };
@@ -31,8 +32,8 @@ exports.getBook = factory.getOne(Book, { path: 'reviews' });
 
 exports.createBook = catchAsync(async (req, res, next) => {
   // const filteredDoc = filterObj(req.body, Object.keys(req.docFilter)[0]);
-  console.log('book-review', { ...req.body, author: req.user.id, ...req.docFilter });
-  const book = await Book.create({ ...req.body, author: req.user.id, ...req.docFilter });
+  // console.log('book-review', { ...req.body, author: req.user.id, ...req.docFilter });
+  const book = await Book.create({ ...req.body, user: req.user.id, ...req.docFilter });
   res.status(201).json({
     status: 'success',
     data: book,
@@ -63,8 +64,44 @@ exports.getIndianBooks = catchAsync(async (req, res) => {
 //   });
 // });
 
+exports.searchSuggestion = catchAsync(async (req, res, next) => {
+  const keyword = req.query.keyword;
+  console.log('keyword', keyword, typeof keyword);
+
+  const bookQuery = new APIFeatures(Book.find({ title: { $regex: `.*${keyword}.*`, $options: 'i' } }), {
+    limit: 5,
+    fields: 'title,image,author,slug',
+    sort: '-ratingsTotal,-ratingsAvg',
+  })
+    .limitFields()
+    .filter()
+    .sort()
+    .paginate();
+  const books = await bookQuery.query;
+
+  const authorQuery = new APIFeatures(Author.find({ name: { $regex: `.*${keyword}.*`, $options: 'i' } }), {
+    limit: 3,
+    fields: 'name,image,author,slug',
+    sort: '-totalFollowers,-ratingsAvg',
+  })
+    .limitFields()
+    .filter()
+    .sort()
+    .paginate();
+  const authors = await authorQuery.query;
+
+  res.status(200).json({
+    status: 'success',
+    books,
+    authors,
+  });
+});
+
 exports.searchBooks = catchAsync(async (req, res, next) => {
   const keyword = req.query.keyword;
+  console.log('keyword', keyword, typeof keyword);
+  // console.log(await Book.find({ title: { $regex: `.*${keyword}.*`, $options: 'i' } }));
+
   const features = new APIFeatures(Book.find({ title: { $regex: `.*${keyword}.*`, $options: 'i' } }), { ...req.query })
     .filter()
     .sort()

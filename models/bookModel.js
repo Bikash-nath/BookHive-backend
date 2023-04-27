@@ -48,7 +48,7 @@ const bookSchema = new mongoose.Schema(
       path: {
         type: String,
         required: [true, 'A book must have a cover image'],
-        default: 'https://bookhive-books.s3.amazonaws.com/book_img.jpg',
+        default: 'book_img.jpg',
       },
       dimensions: {
         height: String,
@@ -107,6 +107,10 @@ const bookSchema = new mongoose.Schema(
     author: {
       type: mongoose.Schema.ObjectId,
       ref: 'Author',
+    },
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'UserProfile',
     },
     series: {
       type: mongoose.Schema.ObjectId,

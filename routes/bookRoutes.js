@@ -8,13 +8,18 @@ router
   .get('/bestsellers', bookController.aliasBestsellers, bookController.getAllBooks)
   .get('/audiobooks', bookController.aliasAudiobooks, bookController.getAllBooks)
   .get('/latest', bookController.aliasLatestBooks, bookController.getAllBooks)
-  .get('/indian', bookController.getIndianBooks)
+  .get('/indian', bookController.getIndianBooks);
+// .get('/regional', bookController.getRegionalBooks);
+
+router
+  .route('/')
   .post(authController.protect, authController.restrictTo('author', 'admin'), bookController.createBook)
   .patch(authController.protect, authController.restrictTo('author', 'admin'), bookController.updateBook)
   .delete(authController.protect, authController.restrictTo('author', 'admin'), bookController.deleteBook);
-// .get('/regional', bookController.getRegionalBooks);
 
-router.route('/search').get(bookController.aliasBestsellers, bookController.searchBooks);
+router
+  .get('/search', bookController.aliasBestsellers, bookController.searchBooks)
+  .get('/searchSuggestion', bookController.searchSuggestion);
 
 // router.route('/userBooks').get(bookController.getUserBooks);
 
