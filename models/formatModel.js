@@ -4,7 +4,7 @@ const formatSchema = new mongoose.Schema({
 	ebook: {
 		fileType: {
 			type: String,
-			enum: ['ePub', 'PDF'],
+			enum: ['epub', 'pdf'],
 		},
 		pagesCount: Number,
 		link: {

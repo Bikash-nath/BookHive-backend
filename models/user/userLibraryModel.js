@@ -28,6 +28,33 @@ const userLibrarySchema = new mongoose.Schema({
 			ref: 'Genre',
 		},
 	],
+	readLater: [
+		{
+			book: {
+				type: mongoose.Schema.ObjectId,
+				ref: 'Book',
+			},
+			createdAt: {
+				type: Date,
+				default: Date.now,
+			},
+		},
+	],
+	readHistory: [
+		{
+			type: mongoose.Schema.ObjectId,
+			ref: 'Book',
+			/* book: {
+					type: mongoose.Schema.ObjectId,
+					ref: 'Book',
+				}, */
+			createdAt: {
+				type: Date,
+				default: Date.now,
+			},
+			//+remainingTime & lastReadAt
+		},
+	],
 })
 
 userLibrarySchema.pre(/^find/, function (next) {
