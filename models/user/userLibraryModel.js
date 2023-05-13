@@ -9,11 +9,6 @@ const userLibrarySchema = new mongoose.Schema({
 		{
 			type: mongoose.Schema.ObjectId,
 			ref: 'Book',
-			// createdAt: {
-			//   type: Date,
-			//   default: Date.now,
-			//   select: false,
-			// },
 		},
 	],
 	authors: [
@@ -28,33 +23,19 @@ const userLibrarySchema = new mongoose.Schema({
 			ref: 'Genre',
 		},
 	],
-	readLater: [
-		{
-			book: {
-				type: mongoose.Schema.ObjectId,
-				ref: 'Book',
-			},
-			createdAt: {
-				type: Date,
-				default: Date.now,
-			},
-		},
-	],
 	readHistory: [
 		{
 			type: mongoose.Schema.ObjectId,
 			ref: 'Book',
-			/* book: {
-					type: mongoose.Schema.ObjectId,
-					ref: 'Book',
-				}, */
-			createdAt: {
-				type: Date,
-				default: Date.now,
-			},
-			//+remainingTime & lastReadAt
 		},
+		// +remainingTime & lastReadAt
 	],
+	// readLater: [
+	// 	{
+	// 		type: mongoose.Schema.ObjectId,
+	// 		ref: 'Book',
+	// 	},
+	// ],
 })
 
 userLibrarySchema.pre(/^find/, function (next) {
@@ -77,6 +58,14 @@ userLibrarySchema.pre(/^find/, function (next) {
 	this.populate({
 		path: 'genres',
 		select: 'title slug',
+	})
+	next()
+})
+
+userLibrarySchema.pre(/^find/, function (next) {
+	this.populate({
+		path: 'readHistory',
+		select: 'title image author slug',
 	})
 	next()
 })

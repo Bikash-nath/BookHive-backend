@@ -13,7 +13,6 @@ exports.createUserLibrary = catchAsync(async (req, res) => {
 		books: [],
 		authors: [],
 		genres: [],
-		readLater: [],
 		readHistory: [],
 	})
 
@@ -28,21 +27,30 @@ exports.getUserLibrary = catchAsync(async (req, res, next) => {
 	query = query
 		.populate({
 			path: 'books',
-			select: 'title image author slug',
+			select: 'title image author slug createdAt',
+			options: {
+				limit: 10,
+			},
+			sort: { createdAt: -1 },
+		})
+		.populate({
+			path: 'authors',
+			select: 'name image author slug createdAt',
+			options: {
+				limit: 12,
+			},
+			sort: { createdAt: -1 },
+		})
+		.populate({
+			path: 'genres',
+			select: 'title slug',
 			options: {
 				limit: 10,
 			},
 		})
 		.populate({
-			path: 'authors',
-			select: 'name image author slug',
-			options: {
-				limit: 12,
-			},
-		})
-		.populate({
-			path: 'genres',
-			select: 'title slug',
+			path: 'readHistory',
+			select: 'title image author slug',
 			options: {
 				limit: 10,
 			},
@@ -102,15 +110,11 @@ exports.getLibraryGenres = catchAsync(async (req, res, next) => {
 })
 
 exports.getReadHistory = catchAsync(async (req, res, next) => {
-	const library = await UserLibrary.findOne({ user: req.user.id }).sort({ createdAt: -1 })
-	// options: {
-	//   sortArray: {books: -1},
-	// },
+	const library = await UserLibrary.findOne({ user: req.user.id })
 
-	if (!library.books) {
-		return next(new AppError(`No books found in user library`, 404))
+	if (!library.readHistory) {
+		return next(new AppError(`No history found in your library`, 404))
 	}
-
 	res.status(200).json({
 		status: 'success',
 		readHistory: library.readHistory,
@@ -123,13 +127,8 @@ exports.addReadHistory = catchAsync(async (req, res, next) => {
 	if (!book) {
 		return next(new AppError('No book found with that id', 404))
 	}
-	const historyIndex = library.readHistory.findIndex((history) => book.slug == history.slug)
-	if (historyIndex === -1) {
-		library.readHistory = [...library.readHistory, { book }]
-	} else {
-		library.readHistory = library.readHistory.filter((_, i) => i !== historyIndex)
-		library.readHistory.push({ book })
-	}
+	library.readHistory = library.readHistory.filter((history) => book.slug !== history.slug)
+	library.readHistory.push(book._id)
 	await library.save()
 
 	res.status(200).json({
@@ -144,10 +143,7 @@ exports.removeReadHistory = catchAsync(async (req, res, next) => {
 	if (!book) {
 		return next(new AppError('No book found with that id', 404))
 	}
-	const historyIndex = library.readHistory.findIndex((history) => book.slug == history.slug)
-	if (historyIndex !== -1) {
-		library.readHistory.filter((_, i) => i !== historyIndex)
-	}
+	library.readHistory = library.readHistory.filter((history) => book.slug === history.slug)
 	await library.save()
 
 	res.status(200).json({
@@ -163,14 +159,12 @@ exports.favouriteBook = catchAsync(async (req, res, next) => {
 		return next(new AppError('No book found with that id', 404))
 	}
 	const bookIndex = library.books.findIndex((b) => book.slug == b.slug)
-	console.log('1. library.books', library.books.length)
 	if (bookIndex === -1) {
 		library.books.push(book)
 	} else {
 		library.books = library.books.filter((_, i) => i !== bookIndex)
 	}
 	await library.save()
-	console.log('2. library.books', library.books.length)
 
 	res.status(200).json({
 		status: 'success',
