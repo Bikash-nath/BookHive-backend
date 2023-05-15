@@ -106,11 +106,10 @@ exports.searchSuggestion = catchAsync(async (req, res, next) => {
 exports.searchBooks = catchAsync(async (req, res, next) => {
 	const keyword = req.query.keyword
 	console.log('keyword', keyword, typeof keyword)
-	// console.log(await Book.find({ title: { $regex: `.*${keyword}.*`, $options: 'i' } }));
+	console.log(req.query)
 
-	const features = new APIFeatures(Book.find({ title: { $regex: `.*${keyword}.*`, $options: 'i' } }), {
-		...req.query,
-	})
+	const features = new APIFeatures(Book.find({ title: { $regex: `.*${keyword}.*`, $options: 'i' } }), req.query)
+		.limitFields()
 		.filter()
 		.sort()
 		.paginate()

@@ -6,6 +6,7 @@ const filterObj = require('../utils/filterObject')
 const Book = require('../models/bookModel')
 const Author = require('../models/authorModel')
 const Genre = require('../models/genreModel')
+const reverseList = require('../utils/reverseList')
 
 exports.createUserLibrary = catchAsync(async (req, res) => {
 	const library = await UserLibrary.create({
@@ -31,7 +32,6 @@ exports.getUserLibrary = catchAsync(async (req, res, next) => {
 			options: {
 				limit: 10,
 			},
-			sort: { createdAt: -1 },
 		})
 		.populate({
 			path: 'authors',
@@ -39,7 +39,6 @@ exports.getUserLibrary = catchAsync(async (req, res, next) => {
 			options: {
 				limit: 12,
 			},
-			sort: { createdAt: -1 },
 		})
 		.populate({
 			path: 'genres',
@@ -62,7 +61,12 @@ exports.getUserLibrary = catchAsync(async (req, res, next) => {
 	}
 	res.status(200).json({
 		status: 'success',
-		data: library,
+		data: {
+			books: reverseList(library.books),
+			authors: reverseList(library.authors),
+			genres: reverseList(library.genres),
+			readHistory: reverseList(library.readHistory),
+		},
 	})
 })
 
@@ -79,7 +83,7 @@ exports.getLibraryBooks = catchAsync(async (req, res, next) => {
 
 	res.status(200).json({
 		status: 'success',
-		books: library.books,
+		books: reverseList(library.books),
 	})
 })
 
@@ -92,7 +96,7 @@ exports.getLibraryAuthors = catchAsync(async (req, res, next) => {
 
 	res.status(200).json({
 		status: 'success',
-		authors: library.authors,
+		authors: reverseList(library.authors),
 	})
 })
 
@@ -105,7 +109,7 @@ exports.getLibraryGenres = catchAsync(async (req, res, next) => {
 
 	res.status(200).json({
 		status: 'success',
-		genres: library.genres,
+		genres: reverseList(library.genres),
 	})
 })
 
@@ -117,7 +121,7 @@ exports.getReadHistory = catchAsync(async (req, res, next) => {
 	}
 	res.status(200).json({
 		status: 'success',
-		readHistory: library.readHistory,
+		readHistory: reverseList(library.readHistory),
 	})
 })
 
