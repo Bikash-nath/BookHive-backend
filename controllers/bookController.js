@@ -48,6 +48,15 @@ exports.createBook = catchAsync(async (req, res, next) => {
 // exports.updateBook = factory.updateOne(Book);
 // exports.deleteBook = factory.deleteOne(Book);
 
+exports.getAudioBooks = catchAsync(async (req, res) => {
+	const books = await Book.find({ 'format.audiobook.fileType': 'mp3' }).sort('-ratingsAvg')
+
+	res.status(200).json({
+		status: 'success',
+		data: books,
+	})
+})
+
 exports.getIndianBooks = catchAsync(async (req, res) => {
 	let books
 	console.log(req.query)

@@ -13,29 +13,33 @@ const formatSchema = new mongoose.Schema({
 		},
 	},
 	audiobook: {
-		fileType: {
+		link: {
 			type: String,
-			enum: ['mp3', 'm4b'],
+			trim: true,
 		},
-		chapters: [
-			{
-				count: Number,
-				title: String,
-				link: {
-					type: String,
-					trim: true,
-				},
-				length: {
-					hours: Number,
-					mins: Number,
-				},
-				size: Number,
-			},
-		],
-		releasedYear: {
-			type: Date,
-			select: false,
-		},
+		// fileType: {
+		// 	type: String,
+		// 	enum: ['mp3', 'm4b'],
+		// },
+		// chapters: [
+		// 	{
+		// 		count: Number,
+		// 		title: String,
+		// 		link: {
+		// 			type: String,
+		// 			trim: true,
+		// 		},
+		// 		length: {
+		// 			hours: Number,
+		// 			mins: Number,
+		// 		},
+		// 		size: Number,
+		// 	},
+		// ],
+		// releasedYear: {
+		// 	type: Date,
+		// 	select: false,
+		// },
 	},
 	book: {
 		type: mongoose.Schema.ObjectId,
